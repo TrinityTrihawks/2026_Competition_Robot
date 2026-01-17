@@ -37,15 +37,7 @@ public class KitbotSubsystem extends SubsystemBase {
         });
   }
 
-   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
+  
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
@@ -57,13 +49,16 @@ public class KitbotSubsystem extends SubsystemBase {
     return false;
   }
 
-  public void KitbotSubsystem(double speed){
+  public void IntakeMotor_run(double speed){
   IntakeMotor.setVoltage(speed);
-  ShootingMotor.setVoltage(speed);
 }
-public void KitbotSubsystem(double speed){
+public void IndexMotor_run(double speed){
   IndexMotor.setVoltage(speed);
 }
+public void ShootingMotor_run(double speed){
+ ShootingMotor.setVoltage(speed);
+}
+
 }
 
 

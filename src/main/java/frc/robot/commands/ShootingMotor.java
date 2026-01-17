@@ -8,7 +8,7 @@ import frc.robot.subsystems.KitbotSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class IntakeMotor extends Command {
+public class ShootingMotor extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final KitbotSubsystem m_subsystem;
   private final double final_speed;
@@ -18,7 +18,7 @@ public class IntakeMotor extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeMotor(KitbotSubsystem subsystem, double speed) {
+  public ShootingMotor(KitbotSubsystem subsystem, double speed) {
     m_subsystem = subsystem;
     final_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,7 +32,7 @@ public class IntakeMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.IntakeMotor_run(final_speed);
+    m_subsystem.ShootingMotor_run(final_speed);
   }
 
   // Called once the command ends or is interrupted.

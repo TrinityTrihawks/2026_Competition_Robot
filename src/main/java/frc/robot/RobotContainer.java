@@ -10,16 +10,22 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.IntakeMotor;
+import frc.robot.commands.IndexMotor;
+import frc.robot.commands.ShootingMotor;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.KitbotSubsystem;
 
 public class RobotContainer {
+    private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem();
+
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double Speed_Scalar = 0.1; // scales all joystick inputs by 1/2
@@ -77,7 +83,11 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-         joystick.b().whileTrue(new KitbotSubsystem(KitbotSubsystem, speed));
+         joystick.x().whileTrue(new IntakeMotor(m_KitbotSubsystem, 1));
+         joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem, -1));
+         joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem, 1));
+         joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem, -1));
+         joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem, 1));
     }
 
     public Command getAutonomousCommand() {
