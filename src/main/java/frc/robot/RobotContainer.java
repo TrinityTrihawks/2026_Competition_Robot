@@ -76,9 +76,13 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+         joystick.b().whileTrue(new KitbotSubsystem(KitbotSubsystem, speed));
     }
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
     }
+
+    
 }
