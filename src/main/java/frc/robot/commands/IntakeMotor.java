@@ -14,7 +14,7 @@ public class IntakeMotor extends Command {
   private final double final_speed;
 
   /**
-   * Creates a new ExampleCommand.
+   * Creates a new ExampleCommand.     
    *
    * @param subsystem The subsystem used by this command.
    */
@@ -32,12 +32,14 @@ public class IntakeMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.IntakeMotor_run(final_speed);
+    // m_subsystem.IntakeMotor_run(final_speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    //m_subsystem.IntakeMotor_run(0);
+    }
 
   // Returns true when the command should end.
   @Override
