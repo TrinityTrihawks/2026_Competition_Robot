@@ -13,6 +13,7 @@ import choreo.auto.AutoFactory;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,7 +58,7 @@ public class RobotContainer {
         autoFactory = drivetrain.createAutoFactory();
         autoRoutines = new AutoRoutines(autoFactory);
 
-        autoChooser.addRoutine("turn180", autoRoutines::simplePathAuto);
+        autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
@@ -72,18 +73,10 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * Speed_Scalar) // Drive
-                                                                                                                  // forward
-                                                                                                                  // with
-                                                                                                                  // negative
-                                                                                                                  // Y
-                                                                                                                  // (forward)
-                        .withVelocityY(-joystick.getLeftX() * MaxSpeed * Speed_Scalar) // Drive left with negative X
-                                                                                       // (left)
-                        .withRotationalRate(-joystick.getRightX() * MaxAngularRate * Speed_Scalar) // Drive
-                                                                                                   // counterclockwise
-                                                                                                   // with negative X
-                                                                                                   // (left)
+                drivetrain.applyRequest(() -> drive
+                        .withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(),0.1) * MaxSpeed * Speed_Scalar) // Drive forward with negative y
+                        .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1) * MaxSpeed * Speed_Scalar) // Drive left with negative X (left)
+                        .withRotationalRate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1) * MaxAngularRate * Speed_Scalar) // Drive counterclockwise with negative X 
                 ));
 
         // Idle while the robot is disabled. This ensures the configured
