@@ -12,8 +12,8 @@ public class AutoRoutines {
     }
 
     public AutoRoutine simplePathAuto() {
-        final AutoRoutine routine = m_factory.newRoutine("betterdrive");
-        final AutoTrajectory simplePath = routine.trajectory("NewPath");
+        final AutoRoutine routine = m_factory.newRoutine("choreo_180_turn");
+        final AutoTrajectory simplePath = routine.trajectory("turningforward");
 
         routine.active().onTrue(
             simplePath.resetOdometry()
