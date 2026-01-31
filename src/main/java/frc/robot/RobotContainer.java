@@ -58,7 +58,8 @@ public class RobotContainer {
         autoFactory = drivetrain.createAutoFactory();
         autoRoutines = new AutoRoutines(autoFactory);
 
-        autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
+        autoChooser.addRoutine("turn180", autoRoutines::simplePathAuto);
+        autoChooser.addRoutine("crossdiamond", autoRoutines::simplePathAuto2);
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         configureBindings();
