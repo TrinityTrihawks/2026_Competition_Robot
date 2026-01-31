@@ -1,8 +1,5 @@
 
-
 package frc.robot.subsystems;
-
-
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -15,14 +12,17 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 public class KitbotSubsystem extends SubsystemBase {
-  //private final SparkMax IntakeMotor = new SparkMax(101, MotorType.kBrushless);
+  // private final SparkMax IntakeMotor = new SparkMax(101, MotorType.kBrushless);
 
- // private final SparkMax IndexMotor = new SparkMax(102, MotorType.kBrushless);
+  // private final SparkMax IndexMotor = new SparkMax(102, MotorType.kBrushless);
 
-  private final SparkMax ShootingMotor = new SparkMax(20, MotorType.kBrushless);
+  // private final SparkMax ShootingMotor = new SparkMax(20,
+  // MotorType.kBrushless);
   // Creates a new ExampleSubsystem. */
   // public motorsubsystem() {}
-   public KitbotSubsystem() {}
+  public KitbotSubsystem() {
+  }
+
   /**
    * Example command factory method.
    *
@@ -37,10 +37,9 @@ public class KitbotSubsystem extends SubsystemBase {
         });
   }
 
-  
-
   /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+   * An example method querying a boolean state of the subsystem (for example, a
+   * digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
@@ -49,18 +48,14 @@ public class KitbotSubsystem extends SubsystemBase {
     return false;
   }
 
-// public void IntakeMotor_run(double speed){
-//   IntakeMotor.setVoltage(speed);
-// }
-// public void IndexMotor_run(double speed){
-//   IndexMotor.setVoltage(speed);
-// }
-public void ShootingMotor_run(double speed){
- ShootingMotor.setVoltage(speed);
-}
+  // public void IntakeMotor_run(double speed){
+  // IntakeMotor.setVoltage(speed);
+  // }
+  // public void IndexMotor_run(double speed){
+  // IndexMotor.setVoltage(speed);
+  // }
+  // public void ShootingMotor_run(double speed) {
+  //   ShootingMotor.setVoltage(speed);
+  // }
 
 }
-
-
-
-
