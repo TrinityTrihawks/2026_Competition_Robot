@@ -70,6 +70,11 @@ public class RobotContainer {
         SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
 
         configureBindings();
+
+    }
+
+    public void getSmartDashboardValues() {
+        Speed_Scalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
     }
 
     private void configureBindings() {
@@ -115,5 +120,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.selectedCommand();
     }
+
 
 }
