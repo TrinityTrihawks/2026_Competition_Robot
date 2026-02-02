@@ -5,22 +5,22 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.KitbotSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class IntakeMotor extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final KitbotSubsystem m_subsystem;
-  private final double final_speed;
+  private double final_speed;
 
   /**
    * Creates a new ExampleCommand.     
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeMotor(KitbotSubsystem subsystem, double speed) {
+  public IntakeMotor(KitbotSubsystem subsystem) {
     m_subsystem = subsystem;
-    final_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -32,6 +32,7 @@ public class IntakeMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // final_speed = SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 1)
     // m_subsystem.IntakeMotor_run(final_speed);
   }
 

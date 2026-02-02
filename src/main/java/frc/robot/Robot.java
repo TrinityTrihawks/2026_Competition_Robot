@@ -42,7 +42,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    m_robotContainer.SmartDashboardNumbers();
   }
 
   @Override
@@ -57,7 +56,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.SmartDashboardNumbers();
   }
 
   @Override

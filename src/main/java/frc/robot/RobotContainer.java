@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IndexMotor;
@@ -33,10 +34,11 @@ public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem();
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
-                                                                                      // max angular velocity
-    private double Speed_Scalar = 0.1; // scales all joystick inputs for the drive train
-
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double Speed_Scalar; // scales all joystick inputs for the drive train
+    private double Shooting_Speed;
+    private double Index_Speed;
+    private double Intake_Speed;
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -61,12 +63,13 @@ public class RobotContainer {
         autoChooser.addRoutine("turn180", autoRoutines::simplePathAuto);
         autoChooser.addRoutine("crossdiamond", autoRoutines::simplePathAuto2);
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        
+        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
+        SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
+        SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
 
         configureBindings();
-    }
-
-    public void SmartDashboardNumbers() {
-        SmartDashboard.getNumber("Swerve Drive Train Percentage 0-1", 0.1);
     }
 
     private void configureBindings() {
@@ -102,11 +105,11 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        // joystick.x().whileTrue(new IntakeMotor(m_KitbotSubsystem, 1));
-        // joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem, -1));
-        // joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem, 1));
-        // joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem, -1));
-        // joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem, 12));
+        joystick.x().whileTrue(new IntakeMotor(m_KitbotSubsystem));
+        joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem));
+        joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
+        joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
+        joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
     }
 
     public Command getAutonomousCommand() {
