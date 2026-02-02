@@ -105,11 +105,11 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        joystick.x().whileTrue(new IntakeMotor(m_KitbotSubsystem));
-        joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem));
-        joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
-        joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
-        joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
+        // joystick.x().whileTrue(new IntakeMotor(m_KitbotSubsystem));
+        // joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem));
+        // joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
+        // joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
+        // joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
     }
 
     public Command getAutonomousCommand() {
