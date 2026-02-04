@@ -20,15 +20,18 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.utils.simulation.MapleSimSwerveDrivetrain;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -40,7 +43,7 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.004; // 4 ms
     private Notifier m_simNotifier = null;
-    private double m_lastSimTime;
+    private MapleSimSwerveDrivetrain mapleSimSwerveDrivetrain = null;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -136,7 +139,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
-        super(drivetrainConstants, modules);
+        super(drivetrainConstants, MapleSimSwerveDrivetrain.regulateModuleConstantsForSimulation(modules));
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -160,7 +163,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         double odometryUpdateFrequency,
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
-        super(drivetrainConstants, odometryUpdateFrequency, modules);
+        super(drivetrainConstants, odometryUpdateFrequency, MapleSimSwerveDrivetrain.regulateModuleConstantsForSimulation(modules));
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -192,7 +195,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Matrix<N3, N1> visionStandardDeviation,
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
-        super(drivetrainConstants, odometryUpdateFrequency, odometryStandardDeviation, visionStandardDeviation, modules);
+        super(drivetrainConstants, odometryUpdateFrequency, odometryStandardDeviation, visionStandardDeviation, MapleSimSwerveDrivetrain.regulateModuleConstantsForSimulation(modules));
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -307,18 +310,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     private void startSimThread() {
-        m_lastSimTime = Utils.getCurrentTimeSeconds();
-
-        /* Run simulation at a faster rate so PID gains behave more reasonably */
-        m_simNotifier = new Notifier(() -> {
-            final double currentTime = Utils.getCurrentTimeSeconds();
-            double deltaTime = currentTime - m_lastSimTime;
-            m_lastSimTime = currentTime;
-
-            /* use the measured time delta, get battery voltage from WPILib */
-            updateSimState(deltaTime, RobotController.getBatteryVoltage());
-        });
+        mapleSimSwerveDrivetrain = new MapleSimSwerveDrivetrain(
+            Seconds.of(kSimLoopPeriod),
+            Pounds.of(115),  // Robot weight with bumpers - adjust for your robot
+            Inches.of(30),   // Bumper length (X) - adjust for your robot
+            Inches.of(30),   // Bumper width (Y) - adjust for your robot
+            DCMotor.getFalcon500(1),  // Drive motor - adjust if using different motors
+            DCMotor.getFalcon500(1),  // Steer motor - adjust if using different motors
+            1.2,  // Wheel coefficient of friction
+            getModuleLocations(),
+            getPigeon2(),
+            getModules(),
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight,
+            TunerConstants.BackLeft,
+            TunerConstants.BackRight);
+        m_simNotifier = new Notifier(mapleSimSwerveDrivetrain::update);
         m_simNotifier.startPeriodic(kSimLoopPeriod);
+    }
+
+    @Override
+    public void resetPose(Pose2d pose) {
+        if (this.mapleSimSwerveDrivetrain != null)
+            mapleSimSwerveDrivetrain.mapleSimDrive.setSimulationWorldPose(pose);
+        Timer.delay(0.05);
+        super.resetPose(pose);
     }
 
     /**
