@@ -4,48 +4,43 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-
-import choreo.auto.AutoChooser;
-import choreo.auto.AutoFactory;
-
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.IntakeMotor;
-import frc.robot.commands.IndexMotor;
-import frc.robot.commands.ShootingMotor;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
+
+import static edu.wpi.first.units.Units.*;
 
 public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem();
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    private double Speed_Scalar; // scales all joystick inputs for the drive train
-    private double Shooting_Speed;
-    private double Index_Speed;
-    private double Intake_Speed;
+    private double SpeedScalar; // scales all joystick inputs for the drive train
+    private double ShootingSpeed;
+    private double IndexSpeed;
+    private double IntakeSpeed;
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * Constants.DEADBAND).withRotationalDeadband(MaxAngularRate * Constants.DEADBAND)
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
@@ -53,20 +48,15 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final AutoFactory autoFactory;
-    private final AutoRoutines autoRoutines;
-    private final AutoChooser autoChooser = new AutoChooser();
+    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        SmartDashboard.putData("Auto Mode", autoChooser);
+
         drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
 
-        autoFactory = drivetrain.createAutoFactory();
-        autoRoutines = new AutoRoutines(autoFactory);
-
-        autoChooser.addRoutine("turn180", autoRoutines::simplePathAuto);
-        autoChooser.addRoutine("crossdiamond", autoRoutines::simplePathAuto2);
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-        
+        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
         SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
         SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
         SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
@@ -77,7 +67,7 @@ public class RobotContainer {
     }
 
     public void getSmartDashboardValues() {
-        Speed_Scalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
     }
 
     private void configureBindings() {
@@ -86,9 +76,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                        .withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(),0.1) * MaxSpeed * Speed_Scalar) // Drive forward with negative y
-                        .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1) * MaxSpeed * Speed_Scalar) // Drive left with negative X (left)
-                        .withRotationalRate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1) * MaxAngularRate * Speed_Scalar) // Drive counterclockwise with negative X 
+                        .withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(),0.1) * MaxSpeed * SpeedScalar) // Drive forward with negative y
+                        .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1) * MaxSpeed * SpeedScalar) // Drive left with negative X (left)
+                        .withRotationalRate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1) * MaxAngularRate * SpeedScalar) // Drive counterclockwise with negative X
                 ));
 
         // Idle while the robot is disabled. This ensures the configured
@@ -100,6 +90,14 @@ public class RobotContainer {
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(
                 () -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+
+        // Use POV controls for robot-centric movement
+        joystick.povUp().whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(0.5).withVelocityY(0))
+        );
+        joystick.povDown().whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+        );
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -121,8 +119,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.selectedCommand();
+        return autoChooser.getSelected();
     }
-
-
 }
