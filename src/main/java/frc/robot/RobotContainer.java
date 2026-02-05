@@ -51,7 +51,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        autoChooser = AutoBuilder.buildAutoChooser("out_and_back");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
