@@ -26,12 +26,15 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.IntakeMotor;
 import frc.robot.commands.IndexMotor;
 import frc.robot.commands.ShootingMotor;
+import frc.robot.commands.led_power;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem();
+    private final LimelightSubsystem m_Led_power = new LimelightSubsystem();
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -115,6 +118,8 @@ public class RobotContainer {
         // joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
         // joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
         // joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
+
+        joystick.rightTrigger().whileTrue(new led_power(m_Led_power));
     }
 
     public Command getAutonomousCommand() {
