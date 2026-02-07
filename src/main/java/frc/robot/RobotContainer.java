@@ -23,6 +23,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -49,6 +50,7 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final VisionSubsystem m_visionSubsystem = new VisionSubsystem(drivetrain);
 
     private final SendableChooser<Command> autoChooser;
 
