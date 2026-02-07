@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,12 +23,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.IndexMotor;
+import frc.robot.commands.IntakeMotor;
+import frc.robot.commands.ShootingMotor;
 import frc.robot.generated.TunerConstants;
-import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
-
-import static edu.wpi.first.units.Units.*;
 
 public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem();
@@ -53,13 +57,13 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        autoChooser = AutoBuilder.buildAutoChooser("out_and_back");
+        autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 1);
         SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
         SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
         SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
@@ -69,7 +73,7 @@ public class RobotContainer {
     }
 
     public void getSmartDashboardValues() {
-        SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1",1);
     }
 
     private void configureBindings() {
@@ -113,18 +117,19 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        // joystick.x().whileTrue(new IntakeMotor(m_KitbotSubsystem));
-        // joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem));
-        // joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
-        // joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
-        // joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
+        
+        
+         joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem));
+         joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
+         joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
+         joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
     }
 
     public Command getAutonomousCommand() {
 
-        return DynamicPathDemo.toFiringPosition();
+       // return DynamicPathDemo.toFiringPosition();
 //        PathPlannerPath dp = DynamicPathDemo.makePath();
 //        return AutoBuilder.followPath(dp);
-        // return autoChooser.getSelected();
+         return autoChooser.getSelected();
     }
 }

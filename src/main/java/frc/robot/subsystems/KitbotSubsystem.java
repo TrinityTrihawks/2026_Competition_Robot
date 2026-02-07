@@ -12,15 +12,21 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 public class KitbotSubsystem extends SubsystemBase {
-  // private final SparkMax IntakeMotor = new SparkMax(101, MotorType.kBrushless);
 
-  // private final SparkMax IndexMotor = new SparkMax(102, MotorType.kBrushless);
+  //set the SparkMaxes to the correct #, important.
 
-  // private final SparkMax ShootingMotor = new SparkMax(20,
-  // MotorType.kBrushless);
-  // Creates a new ExampleSubsystem. */
-  // public motorsubsystem() {}
-  public KitbotSubsystem() {
+   private final SparkMax IntakeMotor = new SparkMax(101, MotorType.kBrushless);
+
+   private final SparkMax IndexMotor = new SparkMax(102, MotorType.kBrushless);
+
+   private final SparkMax ShootingMotor = new SparkMax(20,MotorType.kBrushless);
+
+   //Creates a new ExampleSubsystem. 
+
+   public void motorsubsystem() {
+    
+   }
+   public KitbotSubsystem() {
   }
 
   /**
@@ -48,14 +54,14 @@ public class KitbotSubsystem extends SubsystemBase {
     return false;
   }
 
-  // public void IntakeMotor_run(double speed){
-  // IntakeMotor.setVoltage(speed);
-  // }
-  // public void IndexMotor_run(double speed){
-  // IndexMotor.setVoltage(speed);
-  // }
-  // public void ShootingMotor_run(double speed) {
-  //   ShootingMotor.setVoltage(speed);
-  // }
+   public void IntakeMotor_run(double speed){
+   IntakeMotor.setVoltage(speed);
+   }
+   public void IndexMotor_run(double speed){
+   IndexMotor.setVoltage(speed);
+   }
+   public void ShootingMotor_run(double speed) {
+     ShootingMotor.setVoltage(speed);
+   }
 
 }
