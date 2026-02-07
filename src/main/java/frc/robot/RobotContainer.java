@@ -63,7 +63,7 @@ public class RobotContainer {
         drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 1);
+        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
         SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
         SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
         SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
@@ -73,7 +73,7 @@ public class RobotContainer {
     }
 
     public void getSmartDashboardValues() {
-        SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1",1);
+        SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1",0.1);
     }
 
     private void configureBindings() {
