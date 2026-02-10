@@ -23,9 +23,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.IndexMotor;
-import frc.robot.commands.IntakeMotor;
-import frc.robot.commands.ShootingMotor;
+import frc.robot.commands.HopperToShoot;
+
+import frc.robot.commands.IntakeToHopper;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
@@ -55,6 +55,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController subsController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -122,11 +123,11 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         
-        
-         joystick.y().whileTrue(new IntakeMotor(m_KitbotSubsystem));
-         joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
-         joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
-         joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
+        subsController.leftStick().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+         subsController.rightStick().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+         subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
+         subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
+         subsController.rightBumper().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
     }
 
     public Command getAutonomousCommand() {
