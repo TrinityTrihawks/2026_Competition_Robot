@@ -21,11 +21,11 @@ public class KitbotSubsystem extends SubsystemBase {
   DoubleSupplier getIndexspeed;
   DoubleSupplier getShootingspeed;
 
-   private final SparkMax IntakeMotor = new SparkMax(101, MotorType.kBrushless);
+   private final SparkMax IntakeMotor = new SparkMax(22, MotorType.kBrushless);
 
-   private final SparkMax IndexMotor = new SparkMax(102, MotorType.kBrushless);
+   private final SparkMax IndexMotor = new SparkMax(23, MotorType.kBrushless);
 
-   private final SparkMax ShootingMotor = new SparkMax(20,MotorType.kBrushless);
+   private final SparkMax ShootingMotor = new SparkMax(21,MotorType.kBrushless);
 
    //Creates a new ExampleSubsystem. 
 
@@ -73,7 +73,7 @@ public class KitbotSubsystem extends SubsystemBase {
    }
    public void hopperToShoot() {
      ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
-     IndexMotor.setVoltage(getIndexspeed.getAsDouble());
+     IndexMotor.setVoltage(-getIndexspeed.getAsDouble());
      IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
    }
    public void stopMotors() {

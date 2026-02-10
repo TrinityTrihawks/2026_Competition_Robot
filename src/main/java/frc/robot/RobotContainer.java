@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.HopperToShoot;
 
 import frc.robot.commands.IntakeToHopper;
+import frc.robot.commands.IntakeToShoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
@@ -127,7 +128,7 @@ public class RobotContainer {
          subsController.rightStick().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
          subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
          subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-         subsController.rightBumper().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+         subsController.rightBumper().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
     }
 
     public Command getAutonomousCommand() {
