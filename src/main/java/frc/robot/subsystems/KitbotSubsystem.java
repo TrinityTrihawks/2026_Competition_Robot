@@ -72,7 +72,7 @@ public class KitbotSubsystem extends SubsystemBase {
    IntakeMotor.setVoltage(-getIntakespeed.getAsDouble());
 
    }
-   public void hopperToShoot() {
+   public void shoot() {
      ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
      IndexMotor.setVoltage(-getIndexspeed.getAsDouble());
      IntakeMotor.setVoltage(getIntakespeed.getAsDouble());

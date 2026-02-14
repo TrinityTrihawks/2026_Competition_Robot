@@ -2,14 +2,14 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.KitbotSubsystem;
 
-public class HopperToShoot extends ShootingBase {
+public class Shoot extends ShootingBase {
 
-    public HopperToShoot(KitbotSubsystem subsystem) {
+    public Shoot(KitbotSubsystem subsystem) {
         super(subsystem);
   }
   
   @Override
   public void execute() {
-    m_subsystem.hopperToShoot();
+    m_subsystem.shoot();
   }
 }

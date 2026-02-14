@@ -131,7 +131,6 @@ public class RobotContainer {
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
-               subsController.y().whileTrue(new HopperToShoot(m_KitbotSubsystem));
                subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
                subsController.rightTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
                subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
