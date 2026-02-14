@@ -58,6 +58,7 @@ public class RobotContainer {
         private final Telemetry logger = new Telemetry(MaxSpeed);
 
         private final CommandXboxController joystick = new CommandXboxController(0);
+        private final CommandXboxController subsController = new CommandXboxController(1);
 
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -130,10 +131,10 @@ public class RobotContainer {
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
-               joystick.y().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-               joystick.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-               joystick.rightTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
-               joystick.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
+               subsController.y().whileTrue(new HopperToShoot(m_KitbotSubsystem));
+               subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
+               subsController.rightTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+               subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
         }
 
         public Command getAutonomousCommand() {
@@ -144,16 +145,3 @@ public class RobotContainer {
                 return autoChooser.getSelected();
         }
 }
-// the imagination is a tool that the human world sees as a tool, but God sees
-// it as a part of us that we use to help others. -Esides-
-// we can use our imagination to help the needy and the poor, who, unlike
-// ourselfs, use their imagination to make harm and intimination, and we must
-// convert their leader, who darkens his mind with; youtube, clash royal,
-// fortnight, and the worst of all, ChatGPT. his name is the deranged
-// DANIAL!!!!!!
-// this child even though he trys not to ( in his best defenchs), spendes his
-// time on the internet or if there is non, he does jumpimg dinosaur or a flying
-// cload game. this is a behavior that is an outrage! this must be stop!!
-// but now look at us, the pure, good, and kind poeple that look out for others
-// ("like the child Daniel"), yes we are the goodness in the world -the
-// pieceful, Archy-
