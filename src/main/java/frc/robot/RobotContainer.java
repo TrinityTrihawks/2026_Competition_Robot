@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
+import frc.robot.commands.IntakeToShoot;
 import frc.robot.commands.InverseEverything;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -32,8 +33,8 @@ import frc.robot.subsystems.KitbotSubsystem;
 
 public class RobotContainer {
        private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 1),
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 1),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 10),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 8),
                        () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6));
 
         private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -131,9 +132,10 @@ public class RobotContainer {
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
-               subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-               subsController.rightTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+               subsController.leftTrigger().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
+               subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
                subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
+               subsController.leftTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
         }
 
         public Command getAutonomousCommand() {
