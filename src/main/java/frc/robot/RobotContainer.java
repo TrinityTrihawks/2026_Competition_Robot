@@ -24,118 +24,136 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.HopperToShoot;
-
 import frc.robot.commands.IntakeToHopper;
-import frc.robot.commands.IntakeToShoot;
+import frc.robot.commands.InverseEverything;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
 
 public class RobotContainer {
-    private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-        () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 1),
-        () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 1),
-        () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6)
-    );
+       private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 1),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 1),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6));
 
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    private double SpeedScalar; // scales all joystick inputs for the drive train
-    private double ShootingSpeed;
-    private double IndexSpeed;
-    private double IntakeSpeed;
-    /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * Constants.DEADBAND).withRotationalDeadband(MaxAngularRate * Constants.DEADBAND)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+        private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
+                                                                                      // speed
+        private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per
+                                                                                          // second max angular velocity
+        private double SpeedScalar; // scales all joystick inputs for the drive train
+        //private double ShootingSpeed;
+        //private double IndexSpeed;
+        //private double IntakeSpeed;
+        /* Setting up bindings for necessary control of the swerve drive platform */
+        private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+                        .withDeadband(MaxSpeed * Constants.DEADBAND)
+                        .withRotationalDeadband(MaxAngularRate * Constants.DEADBAND)
+                        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive
+                                                                                 // motors
+        private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+        private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+        private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
+                        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+        private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandXboxController subsController = new CommandXboxController(1);
+        private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+        public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final SendableChooser<Command> autoChooser;
+        private final SendableChooser<Command> autoChooser;
 
-    public RobotContainer() {
-        autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
-        SmartDashboard.putData("Auto Mode", autoChooser);
+        public RobotContainer() {
+                autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
+                SmartDashboard.putData("Auto Mode", autoChooser);
 
-        drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
+                drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
 
-        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
-        SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
-        SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
-        SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
+                CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+                SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+                SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
+                SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
+                SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
 
-        configureBindings();
+                configureBindings();
 
-    }
+        }
 
-    public void getSmartDashboardValues() {
-        SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1",0.1);
-    }
+        public void getSmartDashboardValues() {
+                SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        }
 
-    private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-                // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive
-                        .withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(),0.1) * MaxSpeed * SpeedScalar) // Drive forward with negative y
-                        .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1) * MaxSpeed * SpeedScalar) // Drive left with negative X (left)
-                        .withRotationalRate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1) * MaxAngularRate * SpeedScalar) // Drive counterclockwise with negative X
-                ));
+        private void configureBindings() {
+                // Note that X is defined as forward according to WPILib convention,
+                // and Y is defined as to the left according to WPILib convention.
+                drivetrain.setDefaultCommand(
+                                // Drivetrain will execute this command periodically
+                                drivetrain.applyRequest(() -> drive
+                                                .withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1)
+                                                                * MaxSpeed * SpeedScalar) // Drive forward with negative
+                                                                                          // y
+                                                .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1)
+                                                                * MaxSpeed * SpeedScalar) // Drive left with negative X
+                                                                                          // (left)
+                                                .withRotationalRate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1)
+                                                                * MaxAngularRate * SpeedScalar) // Drive
+                                                                                                // counterclockwise with
+                                                                                                // negative X
+                                ));
 
-        // Idle while the robot is disabled. This ensures the configured
-        // neutral mode is applied to the drive motors while disabled.
-        final var idle = new SwerveRequest.Idle();
-        RobotModeTriggers.disabled().whileTrue(
-                drivetrain.applyRequest(() -> idle).ignoringDisable(true));
+                // Idle while the robot is disabled. This ensures the configured
+                // neutral mode is applied to the drive motors while disabled.
+                final var idle = new SwerveRequest.Idle();
+                RobotModeTriggers.disabled().whileTrue(
+                                drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(
-                () -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+                joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+                joystick.b().whileTrue(drivetrain.applyRequest(
+                                () -> point.withModuleDirection(
+                                                new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-        // Use POV controls for robot-centric movement
-        joystick.povUp().whileTrue(drivetrain.applyRequest(() ->
-                forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        );
-        joystick.povDown().whileTrue(drivetrain.applyRequest(() ->
-                forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        );
+                // Use POV controls for robot-centric movement
+                joystick.povUp().whileTrue(
+                                drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
+                joystick.povDown().whileTrue(
+                                drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+                // Run SysId routines when holding back/start and X/Y.
+                // Note that each routine should be run exactly once in a single log.
+                joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+                joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+                joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+                joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+                // reset the field-centric heading on left bumper press
+                joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+                drivetrain.registerTelemetry(logger::telemeterize);
 
-        
-        subsController.leftStick().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
-         subsController.rightStick().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
-         subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-         subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-         subsController.rightBumper().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
-    }
+               joystick.y().whileTrue(new HopperToShoot(m_KitbotSubsystem));
+               joystick.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
+               joystick.rightTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+               joystick.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
+        }
 
-    public Command getAutonomousCommand() {
+        public Command getAutonomousCommand() {
 
-       // return DynamicPathDemo.toFiringPosition();
-//        PathPlannerPath dp = DynamicPathDemo.makePath();
-//        return AutoBuilder.followPath(dp);
-         return autoChooser.getSelected();
-    }
+                // return DynamicPathDemo.toFiringPosition();
+                // PathPlannerPath dp = DynamicPathDemo.makePath();
+                // return AutoBuilder.followPath(dp);
+                return autoChooser.getSelected();
+        }
 }
+// the imagination is a tool that the human world sees as a tool, but God sees
+// it as a part of us that we use to help others. -Esides-
+// we can use our imagination to help the needy and the poor, who, unlike
+// ourselfs, use their imagination to make harm and intimination, and we must
+// convert their leader, who darkens his mind with; youtube, clash royal,
+// fortnight, and the worst of all, ChatGPT. his name is the deranged
+// DANIAL!!!!!!
+// this child even though he trys not to ( in his best defenchs), spendes his
+// time on the internet or if there is non, he does jumpimg dinosaur or a flying
+// cload game. this is a behavior that is an outrage! this must be stop!!
+// but now look at us, the pure, good, and kind poeple that look out for others
+// ("like the child Daniel"), yes we are the goodness in the world -the
+// pieceful, Archy-
