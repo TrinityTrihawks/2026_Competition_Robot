@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -36,6 +38,10 @@ public class RobotContainer {
                        () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 10),
                        () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 8),
                        () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6));
+
+        private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        
+        
 
         private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                       // speed
@@ -81,10 +87,6 @@ public class RobotContainer {
 
         }
 
-        public void getSmartDashboardValues() {
-                SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
-        }
-
         private void configureBindings() {
                 // Note that X is defined as forward according to WPILib convention,
                 // and Y is defined as to the left according to WPILib convention.
@@ -92,13 +94,13 @@ public class RobotContainer {
                                 // Drivetrain will execute this command periodically
                                 drivetrain.applyRequest(() -> drive
                                                 .withVelocityX(Math.pow(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1), 3)
-                                                                * MaxSpeed * SpeedScalar) // Drive forward with negative
+                                                                * MaxSpeed * speedSupplier.getAsDouble()) // Drive forward with negative
                                                                                           // y
                                                 .withVelocityY(Math.pow(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1), 3)
-                                                                * MaxSpeed * SpeedScalar) // Drive left with negative X
+                                                                * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                                                                           // (left)
                                                 .withRotationalRate(Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
-                                                                * MaxAngularRate * SpeedScalar) // Drive
+                                                                * MaxAngularRate * speedSupplier.getAsDouble()) // Drive
                                                                                                 // counterclockwise with
                                                                                                 // negative X
                                 ));
