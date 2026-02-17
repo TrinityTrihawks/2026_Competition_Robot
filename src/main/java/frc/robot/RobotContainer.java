@@ -40,6 +40,7 @@ public class RobotContainer {
                        () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6));
 
         private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
         
         
 
@@ -79,6 +80,7 @@ public class RobotContainer {
 
                 CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
                 SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+                SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
                 SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
                 SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
                 SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
@@ -100,7 +102,7 @@ public class RobotContainer {
                                                                 * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                                                                           // (left)
                                                 .withRotationalRate(Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
-                                                                * MaxAngularRate * speedSupplier.getAsDouble()) // Drive
+                                                                * MaxAngularRate * angularSpeedSupplier.getAsDouble()) // Drive
                                                                                                 // counterclockwise with
                                                                                                 // negative X
                                 ));
