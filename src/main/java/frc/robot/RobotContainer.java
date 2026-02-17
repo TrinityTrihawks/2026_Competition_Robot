@@ -139,7 +139,7 @@ public class RobotContainer {
                subsController.leftTrigger().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
                subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
                subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
-               subsController.leftTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+               subsController.x().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
         }
 
         public Command getAutonomousCommand() {
