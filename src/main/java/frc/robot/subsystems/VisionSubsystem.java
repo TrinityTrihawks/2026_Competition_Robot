@@ -37,7 +37,7 @@ public class VisionSubsystem extends SubsystemBase {
         m_latestMeasurement = null;
 
         PoseEstimate estimate =
-            LimelightHelpers.getBotPoseEstimate_wpiBlue(m_limelightName);
+            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
 
         if (estimate == null || estimate.tagCount == 0) {
             return;
