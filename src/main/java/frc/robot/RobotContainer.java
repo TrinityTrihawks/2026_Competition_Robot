@@ -120,7 +120,7 @@ public class RobotContainer {
         // joystick.leftTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
         // joystick.rightTrigger().whileTrue(new IndexMotor(m_KitbotSubsystem));
         // joystick.rightBumper().whileTrue(new ShootingMotor(m_KitbotSubsystem));
-        // joystick.rightBumper().whileTrue(new KeepDistance(m_KitbotSubsystem));
+        // joystick.rightBumper().whileTrue(new KeepDistance(drivetrain, m_visionSubsystem, 2));
     }
 
     public Command getAutonomousCommand() {
