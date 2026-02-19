@@ -17,9 +17,9 @@ import com.revrobotics.spark.SparkMax;
 public class KitbotSubsystem extends SubsystemBase {
 
   //set the SparkMaxes to the correct #, important.
-  DoubleSupplier getIntakespeed;
-  DoubleSupplier getIndexspeed;
-  DoubleSupplier getShootingspeed;
+  private DoubleSupplier getIntakespeed;
+  private DoubleSupplier getIndexspeed;
+  private DoubleSupplier getShootingspeed;
 
    private final SparkMax IntakeMotor = new SparkMax(22, MotorType.kBrushless);
 
@@ -30,10 +30,10 @@ public class KitbotSubsystem extends SubsystemBase {
    //Creates a new ExampleSubsystem. 
 
    
-   public KitbotSubsystem(DoubleSupplier getIntakespeed, DoubleSupplier getIndexSpeed, DoubleSupplier getShootingSpeed) {
-    this.getIntakespeed = getIntakespeed;
-    this.getIndexspeed = getIndexSpeed;
-    this.getShootingspeed = getShootingSpeed;
+   public KitbotSubsystem(DoubleSupplier getIndexSpeed, DoubleSupplier getIntakeSpeed, DoubleSupplier getShootingSpeed) {
+      getIntakespeed = getIntakeSpeed;
+      getIndexspeed = getIndexSpeed;
+      getShootingspeed = getShootingSpeed;
   }
   
   
@@ -61,6 +61,11 @@ public class KitbotSubsystem extends SubsystemBase {
     // Query some boolean state, such as a digital sensor.
     return false;
   }
+
+   public void intakeToShoot() {
+    IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
+    ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
+   }
 
    public void intakeToHopper(){
    IntakeMotor.setVoltage(getIntakespeed.getAsDouble());

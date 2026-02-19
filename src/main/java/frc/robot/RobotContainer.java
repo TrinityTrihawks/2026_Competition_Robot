@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
+import frc.robot.commands.IntakeToShoot;
 import frc.robot.commands.InverseEverything;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -32,9 +35,14 @@ import frc.robot.subsystems.KitbotSubsystem;
 
 public class RobotContainer {
        private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 1),
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 1),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 10),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 8),
                        () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6));
+
+        private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+        private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
+        
+        
 
         private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                       // speed
@@ -72,6 +80,7 @@ public class RobotContainer {
 
                 CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
                 SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
+                SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
                 SmartDashboard.putNumber("Speed in Voltage: Index Motor", 1);
                 SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 1);
                 SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 7);
@@ -80,24 +89,20 @@ public class RobotContainer {
 
         }
 
-        public void getSmartDashboardValues() {
-                SpeedScalar = SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
-        }
-
         private void configureBindings() {
                 // Note that X is defined as forward according to WPILib convention,
                 // and Y is defined as to the left according to WPILib convention.
                 drivetrain.setDefaultCommand(
                                 // Drivetrain will execute this command periodically
                                 drivetrain.applyRequest(() -> drive
-                                                .withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1)
-                                                                * MaxSpeed * SpeedScalar) // Drive forward with negative
+                                                .withVelocityX(Math.pow(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1), 3)
+                                                                * MaxSpeed * speedSupplier.getAsDouble()) // Drive forward with negative
                                                                                           // y
-                                                .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1)
-                                                                * MaxSpeed * SpeedScalar) // Drive left with negative X
+                                                .withVelocityY(Math.pow(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1), 3)
+                                                                * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                                                                           // (left)
-                                                .withRotationalRate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1)
-                                                                * MaxAngularRate * SpeedScalar) // Drive
+                                                .withRotationalRate(Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
+                                                                * MaxAngularRate * angularSpeedSupplier.getAsDouble()) // Drive
                                                                                                 // counterclockwise with
                                                                                                 // negative X
                                 ));
@@ -131,10 +136,10 @@ public class RobotContainer {
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
-               subsController.y().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-               subsController.leftTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
-               subsController.rightTrigger().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+               subsController.leftTrigger().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
+               subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
                subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
+               subsController.x().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
         }
 
         public Command getAutonomousCommand() {
