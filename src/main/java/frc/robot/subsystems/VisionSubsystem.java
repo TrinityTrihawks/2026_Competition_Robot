@@ -92,4 +92,14 @@ public class VisionSubsystem extends SubsystemBase {
 
         return VecBuilder.fill(baseXY * distFactor, baseXY * distFactor, baseTheta * distFactor);
     }
+
+    public double getAvgTagDist() {
+    if (m_latestMeasurement == null) return -1.0;
+    PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
+    return (estimate != null && estimate.tagCount > 0) ? estimate.avgTagDist : -1.0;
+    }
+
+    public double getTagTx() {
+    return LimelightHelpers.getTX(m_limelightName); // horizontal offset in degrees
+}
 }
