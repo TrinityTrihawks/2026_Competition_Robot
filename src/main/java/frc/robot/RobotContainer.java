@@ -32,6 +32,7 @@ import frc.robot.commands.InverseEverything;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
        private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
