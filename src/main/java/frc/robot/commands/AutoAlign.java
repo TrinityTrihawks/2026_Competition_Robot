@@ -4,23 +4,37 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
+
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class AutoAlign extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
+  private final CommandSwerveDrivetrain m_drive;
+  private final VisionSubsystem m_vision;
+  double MAX_ROTATE_SPEED = 1.0; // radians
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private double TX; 
+
+    // Tunes how aggressively the robot rotates to face the tag
+    private final PIDController m_anglePID = new PIDController(0.04, 0.0, 0.002);
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoAlign(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public AutoAlign(CommandSwerveDrivetrain drive, VisionSubsystem vision) {
+    m_vision = vision;
+    m_drive = drive;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(drive);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +43,25 @@ public class AutoAlign extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    TX = m_vision.getTagTx();
+
+    if (TX < 0 ) {
+      m_drive.setControl(brake);
+    }
+
+    double rotateOutput = -m_anglePID.calculate(TX, 0.0);
+      rotateOutput = clamp(rotateOutput, -MAX_ROTATE_SPEED, MAX_ROTATE_SPEED);
+      
+      m_drive.setControl(
+        new SwerveRequest.RobotCentric()
+        .withVelocityX(0)
+        .withVelocityY(0)
+        .withRotationalRate(rotateOutput)
+      );
+
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -40,4 +72,7 @@ public class AutoAlign extends Command {
   public boolean isFinished() {
     return false;
   }
+  private double clamp(double val, double min, double max) {
+        return Math.max(min, Math.min(max, val));
+    }
 }
