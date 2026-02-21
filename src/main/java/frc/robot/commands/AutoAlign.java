@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -20,10 +19,12 @@ public class AutoAlign extends Command {
   private final VisionSubsystem m_vision;
   double MAX_ROTATE_SPEED = 1.0; // radians
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private int tags;
     private double TX; 
 
     // Tunes how aggressively the robot rotates to face the tag
     private final PIDController m_anglePID = new PIDController(0.04, 0.0, 0.002);
+    
 
   /**
    * Creates a new ExampleCommand.
@@ -33,6 +34,7 @@ public class AutoAlign extends Command {
   public AutoAlign(CommandSwerveDrivetrain drive, VisionSubsystem vision) {
     m_vision = vision;
     m_drive = drive;
+    m_anglePID.setTolerance(1);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
   }
@@ -44,10 +46,12 @@ public class AutoAlign extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    tags = m_vision.getTagCount();
     TX = m_vision.getTagTx();
 
-    if (TX < 0 ) {
+    if (tags < 1 ) {
       m_drive.setControl(brake);
+      return;
     }
 
     double rotateOutput = -m_anglePID.calculate(TX, 0.0);
@@ -65,12 +69,14 @@ public class AutoAlign extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drive.setControl(new SwerveRequest.Idle());
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_anglePID.atSetpoint();
   }
   private double clamp(double val, double min, double max) {
         return Math.max(min, Math.min(max, val));

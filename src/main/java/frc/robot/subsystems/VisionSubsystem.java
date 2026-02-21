@@ -101,5 +101,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     public double getTagTx() {
     return LimelightHelpers.getTX(m_limelightName); // horizontal offset in degrees
-}
+    }
+    public int getTagCount() {
+        PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
+    return (estimate != null) ? estimate.tagCount : 0;
+    }
 }
