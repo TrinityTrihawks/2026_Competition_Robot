@@ -13,6 +13,7 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
 import edu.wpi.first.math.MathUtil;
@@ -74,6 +75,10 @@ public class RobotContainer {
         private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
+
+                NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
+                NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem));
+
                 autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
                 SmartDashboard.putData("Auto Mode", autoChooser);
 
