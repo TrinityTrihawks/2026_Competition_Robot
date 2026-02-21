@@ -2,6 +2,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -12,17 +15,28 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 public class KitbotSubsystem extends SubsystemBase {
-  // private final SparkMax IntakeMotor = new SparkMax(101, MotorType.kBrushless);
 
-  // private final SparkMax IndexMotor = new SparkMax(102, MotorType.kBrushless);
+  //set the SparkMaxes to the correct #, important.
+  private DoubleSupplier getIntakespeed;
+  private DoubleSupplier getIndexspeed;
+  private DoubleSupplier getShootingspeed;
 
-  // private final SparkMax ShootingMotor = new SparkMax(20,
-  // MotorType.kBrushless);
-  // Creates a new ExampleSubsystem. */
-  // public motorsubsystem() {}
-  public KitbotSubsystem() {
+   private final SparkMax IntakeMotor = new SparkMax(22, MotorType.kBrushless);
+
+   private final SparkMax IndexMotor = new SparkMax(23, MotorType.kBrushless);
+
+   private final SparkMax ShootingMotor = new SparkMax(21,MotorType.kBrushless);
+
+   //Creates a new ExampleSubsystem. 
+
+   
+   public KitbotSubsystem(DoubleSupplier getIndexSpeed, DoubleSupplier getIntakeSpeed, DoubleSupplier getShootingSpeed) {
+      getIntakespeed = getIntakeSpeed;
+      getIndexspeed = getIndexSpeed;
+      getShootingspeed = getShootingSpeed;
   }
-
+  
+  
   /**
    * Example command factory method.
    *
@@ -48,14 +62,31 @@ public class KitbotSubsystem extends SubsystemBase {
     return false;
   }
 
-  // public void IntakeMotor_run(double speed){
-  // IntakeMotor.setVoltage(speed);
-  // }
-  // public void IndexMotor_run(double speed){
-  // IndexMotor.setVoltage(speed);
-  // }
-  // public void ShootingMotor_run(double speed) {
-  //   ShootingMotor.setVoltage(speed);
-  // }
+   public void intakeToShoot() {
+    IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
+    ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
+   }
+
+   public void intakeToHopper(){
+   IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
+   IndexMotor.setVoltage(getIndexspeed.getAsDouble());
+   }
+   public void inverseEverything(){
+   ShootingMotor.setVoltage(-getShootingspeed.getAsDouble());
+   IndexMotor.setVoltage(-getIndexspeed.getAsDouble());
+   IntakeMotor.setVoltage(-getIntakespeed.getAsDouble());
+
+   }
+   public void hopperToShoot() {
+     ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
+     IndexMotor.setVoltage(-getIndexspeed.getAsDouble());
+     IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
+   }
+   public void stopMotors() {
+    ShootingMotor.setVoltage(0);
+    IndexMotor.setVoltage(0);
+    IntakeMotor.setVoltage(0);
+   }
+
 
 }

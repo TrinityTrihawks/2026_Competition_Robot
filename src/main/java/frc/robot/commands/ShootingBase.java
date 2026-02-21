@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class ShootingMotor extends Command {
+public abstract class ShootingBase extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final KitbotSubsystem m_subsystem;
+  protected final KitbotSubsystem m_subsystem;
   private double final_speed;
 
   /**
@@ -19,7 +19,7 @@ public class ShootingMotor extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootingMotor(KitbotSubsystem subsystem) {
+  public ShootingBase(KitbotSubsystem subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -30,17 +30,12 @@ public class ShootingMotor extends Command {
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    //final_speed = SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 7);
-    //m_subsystem.ShootingMotor_run(final_speed);
-  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_subsystem.ShootingMotor_run(0);
-  }
+    m_subsystem.stopMotors(); // stops all three subsystem motors for all commands
+    }
 
   // Returns true when the command should end.
   @Override
