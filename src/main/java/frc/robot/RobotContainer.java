@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -76,8 +77,8 @@ public class RobotContainer {
 
         public RobotContainer() {
 
-                // NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
-                // NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem));
+                NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
+                NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem));
 
                 autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
                 SmartDashboard.putData("Auto Mode", autoChooser);
