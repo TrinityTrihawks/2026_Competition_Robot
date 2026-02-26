@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
 import frc.robot.commands.IntakeToShoot;
@@ -72,6 +73,8 @@ public class RobotContainer {
         private final CommandXboxController subsController = new CommandXboxController(1);
 
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+        private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain, "limelight-main");
 
         private final SendableChooser<Command> autoChooser;
 
@@ -140,6 +143,8 @@ public class RobotContainer {
 
                 // reset the field-centric heading on left bumper press
                 joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+                joystick.rightTrigger().whileTrue(new AutoAlign(drivetrain, m_vision));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
