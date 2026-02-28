@@ -89,7 +89,7 @@ public class KeepDistance extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_anglePID.atSetpoint() && m_distancePID.atSetpoint(); // returns true when both PID controllers are within tolerance
   }
   private double clamp(double val, double min, double max) {
         return Math.max(min, Math.min(max, val));

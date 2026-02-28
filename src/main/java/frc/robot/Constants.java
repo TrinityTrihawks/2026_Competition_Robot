@@ -5,8 +5,8 @@ public class Constants {
     public static final int DEFAULT_SPEED_SCALER = 1;
 
     public static final class VisionConstants {
-        public static final String LIMELIGHT_NAME = "limelight-main";
-
+        public static final String LIMELIGHT_NAME = "limelight-main"; // navigate to Limeight Web Page to change which will be <limeight name>.local:5801
+                                                                
         public static final double SINGLE_TAG_BASE_XY_STDDEV = 0.8;
         public static final double SINGLE_TAG_BASE_THETA_STDDEV = 1.2;
 

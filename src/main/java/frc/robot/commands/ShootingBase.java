@@ -5,14 +5,12 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.KitbotSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public abstract class ShootingBase extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   protected final KitbotSubsystem m_subsystem;
-  private double final_speed;
 
   /**
    * Creates a new ExampleCommand.

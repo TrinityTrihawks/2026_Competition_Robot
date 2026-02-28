@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -53,7 +52,7 @@ public class RobotContainer {
                                                                                       // speed
         private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per
                                                                                           // second max angular velocity
-        private double SpeedScalar; // scales all joystick inputs for the drive train
+        
         //private double ShootingSpeed;
         //private double IndexSpeed;
         //private double IntakeSpeed;
@@ -83,6 +82,8 @@ public class RobotContainer {
 
                 NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
                 NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem));
+                NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
+
 
                 autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
                 SmartDashboard.putData("Auto Mode", autoChooser);

@@ -42,9 +42,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {
-        SmartDashboard.putBoolean("RobotPeriodic/Running", true);
-        System.out.println("VisionSubsystem periodic running");
+    public void periodic() { // for periodic methods if it returns it cuts the loop back to the start
         m_latestMeasurement = null;
 
         Rotation3d rotation = m_drivetrain.getRotation3d();
@@ -60,7 +58,7 @@ public class VisionSubsystem extends SubsystemBase {
         PoseEstimate estimate =
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
 
-            llPosePub.set(estimate.pose);
+            llPosePub.set(estimate.pose); // publish the pose to network tables
 
         SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
         SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);

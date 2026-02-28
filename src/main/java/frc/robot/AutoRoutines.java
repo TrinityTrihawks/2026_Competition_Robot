@@ -4,6 +4,8 @@ import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 
+// This file is for intstantiating Choreo Paths, not Path Planner Paths
+
 public class AutoRoutines {
     private final AutoFactory m_factory;
 
@@ -14,10 +16,6 @@ public class AutoRoutines {
     public AutoRoutine simplePathAuto() {
         final AutoRoutine routine = m_factory.newRoutine("choreo_180_turn");
         final AutoTrajectory simplePath = routine.trajectory("turningforward");
-
-        final AutoRoutine routine2 = m_factory.newRoutine("choreo_180_turn");
-        final AutoTrajectory simplePath2 = routine.trajectory("turningforward");
-
 
         routine.active().onTrue(
             simplePath.resetOdometry()

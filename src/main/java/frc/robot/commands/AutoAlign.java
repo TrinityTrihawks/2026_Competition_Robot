@@ -49,13 +49,13 @@ public class AutoAlign extends Command {
     tags = m_vision.getTagCount();
     TX = m_vision.getTagTx();
 
-    if (tags < 1 ) {
+    if (tags < 1 ) {   // If no tags are seen stop moving
       m_drive.setControl(brake);
       return;
     }
 
-    double rotateOutput = m_anglePID.calculate(TX, 0.0);
-      rotateOutput = clamp(rotateOutput, -MAX_ROTATE_SPEED, MAX_ROTATE_SPEED);
+    double rotateOutput = m_anglePID.calculate(TX, 0.0); //Finds next number for the PID controller
+      rotateOutput = clamp(rotateOutput, -MAX_ROTATE_SPEED, MAX_ROTATE_SPEED); // Keeps the number within the min and max
       
       m_drive.setControl(
         new SwerveRequest.RobotCentric()
@@ -76,7 +76,7 @@ public class AutoAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_anglePID.atSetpoint();
+    return m_anglePID.atSetpoint(); // returns true when the output is within tolernace which is et andthe top of the file
   }
   private double clamp(double val, double min, double max) {
         return Math.max(min, Math.min(max, val));
