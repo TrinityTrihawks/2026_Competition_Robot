@@ -39,9 +39,9 @@ import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
        private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 10),
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 8),
-                       () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 6));
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 0.625),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 0.666),
+                       () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 0.45833));
 
         private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
         private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
@@ -91,9 +91,9 @@ public class RobotContainer {
                 CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
                 SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.3);
                 SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
-                SmartDashboard.putNumber("Speed in Voltage: Index Motor", 6);
-                SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 8);
-                SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 6);
+                SmartDashboard.putNumber("Speed in Voltage: Index Motor", 0.45833);
+                SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 0.625);
+                SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 0.666);
 
                 CommandScheduler.getInstance().registerSubsystem(m_vision);
 

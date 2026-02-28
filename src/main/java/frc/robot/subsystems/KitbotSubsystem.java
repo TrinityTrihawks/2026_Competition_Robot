@@ -63,29 +63,29 @@ public class KitbotSubsystem extends SubsystemBase {
   }
 
    public void intakeToShoot() {
-    IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
-    ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
+    IntakeMotor.set(getIntakespeed.getAsDouble());
+    ShootingMotor.set(getShootingspeed.getAsDouble());
    }
 
    public void intakeToHopper(){
-   IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
-   IndexMotor.setVoltage(getIndexspeed.getAsDouble());
+   IntakeMotor.set(getIntakespeed.getAsDouble());
+   IndexMotor.set(getIndexspeed.getAsDouble());
    }
    public void inverseEverything(){
-   ShootingMotor.setVoltage(-getShootingspeed.getAsDouble());
-   IndexMotor.setVoltage(-getIndexspeed.getAsDouble());
-   IntakeMotor.setVoltage(-getIntakespeed.getAsDouble());
+   ShootingMotor.set(-getShootingspeed.getAsDouble());
+   IndexMotor.set(-getIndexspeed.getAsDouble());
+   IntakeMotor.set(-getIntakespeed.getAsDouble());
 
    }
    public void hopperToShoot() {
-     ShootingMotor.setVoltage(getShootingspeed.getAsDouble());
-     IndexMotor.setVoltage(-getIndexspeed.getAsDouble());
-     IntakeMotor.setVoltage(getIntakespeed.getAsDouble());
+     ShootingMotor.set(getShootingspeed.getAsDouble());
+     IndexMotor.set(-getIndexspeed.getAsDouble());
+     IntakeMotor.set(getIntakespeed.getAsDouble());
    }
    public void stopMotors() {
-    ShootingMotor.setVoltage(0);
-    IndexMotor.setVoltage(0);
-    IntakeMotor.setVoltage(0);
+    ShootingMotor.set(0);
+    IndexMotor.set(0);
+    IntakeMotor.set(0);
    }
 
 
