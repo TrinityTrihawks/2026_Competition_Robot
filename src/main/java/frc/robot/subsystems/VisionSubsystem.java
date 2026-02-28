@@ -34,10 +34,19 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("RobotPeriodic/Running", true);
+        System.out.println("VisionSubsystem periodic running");
         m_latestMeasurement = null;
 
         PoseEstimate estimate =
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
+
+            System.out.println(estimate);
+
+        SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
+        SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);
+        SmartDashboard.putNumber("Angle Error for Limelight", getTagTx());
+        SmartDashboard.putNumber("tags", getTagCount());
 
         if (estimate == null || estimate.tagCount == 0) {
             return;
@@ -60,11 +69,6 @@ public class VisionSubsystem extends SubsystemBase {
         m_drivetrain.addVisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
 
         m_latestMeasurement = new VisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
-
-        SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
-        SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);
-        SmartDashboard.putNumber("Vision/PoseX", pose.getX());
-        SmartDashboard.putNumber("Vision/PoseY", pose.getY());
     }
 
     public VisionMeasurement getLatestMeasurement() {
@@ -106,6 +110,6 @@ public class VisionSubsystem extends SubsystemBase {
     }
     public int getTagCount() {
         PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
-    return (estimate != null) ? estimate.tagCount : 0;
+    return estimate.tagCount ;
     }
 }

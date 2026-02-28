@@ -74,7 +74,7 @@ public class RobotContainer {
 
         public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-        private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain, "limelight-main");
+        private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
         private final SendableChooser<Command> autoChooser;
 
@@ -94,6 +94,8 @@ public class RobotContainer {
                 SmartDashboard.putNumber("Speed in Voltage: Index Motor", 6);
                 SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 8);
                 SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 6);
+
+                CommandScheduler.getInstance().registerSubsystem(m_vision);
 
                 configureBindings();
 

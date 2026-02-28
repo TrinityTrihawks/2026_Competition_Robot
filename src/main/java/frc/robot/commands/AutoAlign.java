@@ -17,7 +17,7 @@ public class AutoAlign extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final CommandSwerveDrivetrain m_drive;
   private final VisionSubsystem m_vision;
-  double MAX_ROTATE_SPEED = 1.0; // radians
+  double MAX_ROTATE_SPEED = 3.0; // radians
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private int tags;
     private double TX; 
@@ -54,7 +54,7 @@ public class AutoAlign extends Command {
       return;
     }
 
-    double rotateOutput = -m_anglePID.calculate(TX, 0.0);
+    double rotateOutput = m_anglePID.calculate(TX, 0.0);
       rotateOutput = clamp(rotateOutput, -MAX_ROTATE_SPEED, MAX_ROTATE_SPEED);
       
       m_drive.setControl(
