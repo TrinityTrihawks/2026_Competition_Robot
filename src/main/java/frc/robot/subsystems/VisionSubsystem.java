@@ -71,7 +71,6 @@ public class VisionSubsystem extends SubsystemBase {
             return;
         }
 
-        LimelightHelpers.SetFiducialIDFiltersOverride(m_limelightName,new int []{9, 10, 25, 26});
 
         if (estimate.avgTagDist > VisionConstants.MAX_TAG_DISTANCE) {
             return;

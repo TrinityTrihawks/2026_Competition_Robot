@@ -6,12 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class SmartShoot extends ParallelCommandGroup {
+public class SmartShoot extends SequentialCommandGroup {
 
   public SmartShoot(CommandSwerveDrivetrain m_drive, VisionSubsystem m_vision, KitbotSubsystem m_kitbot, double targetDist) {
     addCommands(new KeepDistance(m_drive,m_vision, targetDist), new HopperToShoot(m_kitbot));
