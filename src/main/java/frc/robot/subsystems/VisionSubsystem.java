@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
@@ -22,12 +28,15 @@ public class VisionSubsystem extends SubsystemBase {
     private final CommandSwerveDrivetrain m_drivetrain;
     private final String m_limelightName;
     private VisionMeasurement m_latestMeasurement = null;
+    private StructPublisher<Pose2d> llPosePub;
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain) {
         this(drivetrain, VisionConstants.LIMELIGHT_NAME);
     }
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain, String limelightName) {
+         llPosePub = NetworkTableInstance.getDefault()
+        .getStructTopic(limelightName + "-pose", Pose2d.struct).publish();
         m_drivetrain = drivetrain;
         m_limelightName = limelightName;
     }
@@ -38,10 +47,20 @@ public class VisionSubsystem extends SubsystemBase {
         System.out.println("VisionSubsystem periodic running");
         m_latestMeasurement = null;
 
+        Rotation3d rotation = m_drivetrain.getRotation3d();
+
+        double yaw = rotation.getZ();
+        double pitch = rotation.getY();
+        double roll = rotation.getX();
+
+        double YawRate = m_drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
+
+        LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, pitch, 0, roll, 0);
+
         PoseEstimate estimate =
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
 
-            System.out.println(estimate);
+            llPosePub.set(estimate.pose);
 
         SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
         SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);

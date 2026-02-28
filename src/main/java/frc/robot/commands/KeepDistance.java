@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -68,7 +67,7 @@ public class KeepDistance extends Command {
         driveOutput = clamp(driveOutput, -MAX_DRIVE_SPEED, MAX_DRIVE_SPEED);
 
         // tx > 0 means tag is to the right, so rotate right (negative for most conventions)
-        double rotateOutput = -m_anglePID.calculate(tx, 0.0);
+        double rotateOutput = m_anglePID.calculate(tx, 0.0);
         rotateOutput = clamp(rotateOutput, -MAX_ROTATE_SPEED, MAX_ROTATE_SPEED);
 
          // Robot-relative: X = forward, Y = strafe, Omega = rotation

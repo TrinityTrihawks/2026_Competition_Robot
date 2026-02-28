@@ -32,6 +32,7 @@ import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
 import frc.robot.commands.IntakeToShoot;
 import frc.robot.commands.InverseEverything;
+import frc.robot.commands.SmartShoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
@@ -154,6 +155,8 @@ public class RobotContainer {
                subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem));
                subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
                subsController.x().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
+               subsController.rightBumper().whileTrue(new SmartShoot(drivetrain, m_vision, m_KitbotSubsystem, 3.5));
+               subsController.leftBumper().whileTrue(new SmartShoot(drivetrain, m_vision, m_KitbotSubsystem, 6.5));
         }
 
         public Command getAutonomousCommand() {
