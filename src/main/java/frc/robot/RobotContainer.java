@@ -85,7 +85,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
 
 
-                autoChooser = AutoBuilder.buildAutoChooser("2026_auto");
+                autoChooser = AutoBuilder.buildAutoChooser("");
                 SmartDashboard.putData("Auto Mode", autoChooser);
 
                 drivetrain.resetPose(new Pose2d(2, 1, new Rotation2d()));
@@ -93,9 +93,9 @@ public class RobotContainer {
                 CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
                 SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.3);
                 SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
-                SmartDashboard.putNumber("Speed in Voltage: Index Motor", 0.45833);
-                SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 0.625);
-                SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 0.666);
+                SmartDashboard.putNumber("Speed in Voltage: Index Motor", 0.625);
+                SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 0.666);
+                SmartDashboard.putNumber("Speed in Voltage: Shooting Motor",0.45833);
 
                 CommandScheduler.getInstance().registerSubsystem(m_vision);
 

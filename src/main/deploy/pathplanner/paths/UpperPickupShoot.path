@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5954615384615396,
-        "y": 5.890960854092527
+        "x": 3.600510083036774,
+        "y": 7.569395017793594
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7182562277580082,
-        "y": 5.98779359430605
+        "x": 0.6309727164887313,
+        "y": 7.687746144721235
       },
       "isLocked": false,
       "linkedName": null
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 2.828000000000001,
-        "y": 4.023371794871795
+        "x": 3.320771055753263,
+        "y": 4.728967971530249
       },
       "prevControl": {
-        "x": 1.7582051282051299,
-        "y": 4.8024615384615394
+        "x": 1.857520759193358,
+        "y": 4.911874258600237
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,28 +46,21 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1063829787234056,
-      "rotationDegrees": -80.0
+      "waypointRelativePos": 0.563161609033168,
+      "rotationDegrees": -116.2857530327819
+    },
+    {
+      "waypointRelativePos": 1.2717007762879315,
+      "rotationDegrees": -73.2938665795485
     }
   ],
   "constraintZones": [],
-  "pointTowardsZones": [
-    {
-      "fieldPosition": {
-        "x": -1.0,
-        "y": 6.0
-      },
-      "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.26519337016574684,
-      "maxWaypointRelativePos": 0.63456985003946,
-      "name": "Point Towards Zone"
-    }
-  ],
+  "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "IntaketoHopper",
-      "waypointRelativePos": 0.6966101694915221,
-      "endWaypointRelativePos": 1.3067796610169449,
+      "waypointRelativePos": 0.567796610169491,
+      "endWaypointRelativePos": 1.3711864406779641,
       "command": null
     },
     {
@@ -87,7 +80,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.21495781441369513
+    "rotation": -29.19748604606447
   },
   "reversed": false,
   "folder": null,

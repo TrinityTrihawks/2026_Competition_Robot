@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.816371794871796,
-        "y": 4.011743589743589
+        "x": 3.1271055753262162,
+        "y": 4.029620403321471
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3396153846153855,
-        "y": 2.7675256410256406
+        "x": 2.6503491650698057,
+        "y": 2.7854024546035223
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterShoot"
     },
     {
       "anchor": {
-        "x": 0.5023589743589756,
-        "y": 0.6279358974358957
+        "x": 0.5341399762752084,
+        "y": 0.5974377224199281
       },
       "prevControl": {
-        "x": 1.5837820512820526,
-        "y": 0.6511923076923074
+        "x": 1.5562633451957295,
+        "y": 1.6948754448398573
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "HumanStation"
     }
   ],
   "rotationTargets": [],

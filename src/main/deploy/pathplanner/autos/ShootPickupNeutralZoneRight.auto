@@ -30,9 +30,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "ShootPUHumanShoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ShootPickupNeutralRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntaketoHopper"
+                }
+              }
+            ]
           }
         }
       ]

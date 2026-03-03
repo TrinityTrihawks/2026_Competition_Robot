@@ -3,67 +3,79 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.769858974358976,
-        "y": 3.976858974358975
+        "x": 3.1271055753262162,
+        "y": 4.029620403321471
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.793115384615386,
-        "y": 2.186115384615385
+        "x": 3.073309608540926,
+        "y": 3.104329774614472
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterShoot"
     },
     {
       "anchor": {
-        "x": 3.8280256410256417,
-        "y": 0.7442179487179499
+        "x": 3.299252669039147,
+        "y": 0.9094543297746145
       },
       "prevControl": {
-        "x": 2.9370385122498517,
-        "y": 1.1103770427353976
+        "x": 2.7823749556541753,
+        "y": 1.5526799286536903
       },
       "nextControl": {
-        "x": 4.676884615384616,
-        "y": 0.3953717948717963
+        "x": 3.783416370106763,
+        "y": 0.30693950177935925
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.432769230769232,
-        "y": 0.9302692307692313
+        "x": 7.7535587188612105,
+        "y": 1.3936180308422308
       },
       "prevControl": {
-        "x": 7.118807692307694,
-        "y": 0.046525641025641606
+        "x": 7.81015217032575,
+        "y": 0.37493590448050496
       },
       "nextControl": {
-        "x": 7.902241193429298,
-        "y": 2.2517458664049785
+        "x": 7.6997627520759195,
+        "y": 2.3619454329774614
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.758358974358975,
-        "y": 6.8025128205128205
+        "x": 7.463060498220641,
+        "y": 7.095990510083036
       },
       "prevControl": {
-        "x": 7.676961538461539,
-        "y": 4.790833333333333
+        "x": 7.721281138790035,
+        "y": 6.170699881376038
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7092448835568099,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntaketoHopper",
+      "waypointRelativePos": 1.8279661016949134,
+      "endWaypointRelativePos": 3.0,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -74,7 +86,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -87.08916217383221
   },
   "reversed": false,
   "folder": null,
