@@ -1,8 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+
 public class Constants {
     public static final double DEADBAND = 0.05;
     public static final int DEFAULT_SPEED_SCALER = 1;
+    public static final Translation2d BlUE_HUB = new Translation2d(4.63,4);
+    public static final Translation2d RED_HUB = new Translation2d(11.91,4);
 
     public static final class VisionConstants {
         public static final String LIMELIGHT_NAME = "limelight-main"; // navigate to Limeight Web Page to change which will be <limeight name>.local:5801
@@ -15,5 +19,6 @@ public class Constants {
 
         public static final double MAX_TAG_DISTANCE = 5.0;
         public static final double DISTANCE_SCALING_EXPONENT = 2.0;
+
     }
 }
