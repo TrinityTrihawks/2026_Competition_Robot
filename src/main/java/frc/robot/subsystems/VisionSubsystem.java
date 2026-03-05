@@ -52,8 +52,8 @@ public class VisionSubsystem extends SubsystemBase {
         double roll = rotation.getX();
 
         double YawRate = m_drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
-
         LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, pitch, 0, roll, 0);
+
 
         PoseEstimate estimate =
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
