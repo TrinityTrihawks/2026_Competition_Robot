@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
@@ -22,26 +28,47 @@ public class VisionSubsystem extends SubsystemBase {
     private final CommandSwerveDrivetrain m_drivetrain;
     private final String m_limelightName;
     private VisionMeasurement m_latestMeasurement = null;
+    private StructPublisher<Pose2d> llPosePub;
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain) {
         this(drivetrain, VisionConstants.LIMELIGHT_NAME);
     }
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain, String limelightName) {
+         llPosePub = NetworkTableInstance.getDefault()
+        .getStructTopic(limelightName + "-pose", Pose2d.struct).publish();
         m_drivetrain = drivetrain;
         m_limelightName = limelightName;
     }
 
     @Override
-    public void periodic() {
+    public void periodic() { // for periodic methods if it returns it cuts the loop back to the start
         m_latestMeasurement = null;
+
+        Rotation3d rotation = m_drivetrain.getRotation3d();
+
+        double yaw = rotation.getZ();
+        double pitch = rotation.getY();
+        double roll = rotation.getX();
+
+        double YawRate = m_drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
+        LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, pitch, 0, roll, 0);
+
 
         PoseEstimate estimate =
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
 
+            llPosePub.set(estimate.pose); // publish the pose to network tables
+
+        SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
+        SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);
+        SmartDashboard.putNumber("Angle Error for Limelight", getTagTx());
+        SmartDashboard.putNumber("tags", getTagCount());
+
         if (estimate == null || estimate.tagCount == 0) {
             return;
         }
+
 
         if (estimate.avgTagDist > VisionConstants.MAX_TAG_DISTANCE) {
             return;
@@ -58,11 +85,6 @@ public class VisionSubsystem extends SubsystemBase {
         m_drivetrain.addVisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
 
         m_latestMeasurement = new VisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
-
-        SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
-        SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);
-        SmartDashboard.putNumber("Vision/PoseX", pose.getX());
-        SmartDashboard.putNumber("Vision/PoseY", pose.getY());
     }
 
     public VisionMeasurement getLatestMeasurement() {
@@ -91,5 +113,19 @@ public class VisionSubsystem extends SubsystemBase {
         );
 
         return VecBuilder.fill(baseXY * distFactor, baseXY * distFactor, baseTheta * distFactor);
+    }
+
+    public double getAvgTagDist() {
+    if (m_latestMeasurement == null) return -1.0;
+    PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
+    return (estimate != null && estimate.tagCount > 0) ? estimate.avgTagDist : -1.0;
+    }
+
+    public double getTagTx() {
+    return LimelightHelpers.getTX(m_limelightName); // horizontal offset in degrees
+    }
+    public int getTagCount() {
+        PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
+    return estimate.tagCount ;
     }
 }

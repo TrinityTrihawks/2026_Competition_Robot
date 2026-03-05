@@ -1,12 +1,15 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public class Constants {
     public static final double DEADBAND = 0.05;
     public static final int DEFAULT_SPEED_SCALER = 1;
-
+    public static final Pose2d START_POSE = new Pose2d(3.5, 4, Rotation2d.fromDegrees(0));
     public static final class VisionConstants {
-        public static final String LIMELIGHT_NAME = "limelight";
-
+        public static final String LIMELIGHT_NAME = "limelight-main"; // navigate to Limeight Web Page to change which will be <limeight name>.local:5801
+                                                                
         public static final double SINGLE_TAG_BASE_XY_STDDEV = 0.8;
         public static final double SINGLE_TAG_BASE_THETA_STDDEV = 1.2;
 
