@@ -47,16 +47,16 @@ public class VisionSubsystem extends SubsystemBase {
 
         Rotation3d rotation = m_drivetrain.getRotation3d();
 
-        double yaw = rotation.getZ();
-        double pitch = rotation.getY();
-        double roll = rotation.getX();
+        double yaw = Math.toDegrees(rotation.getZ());
+        double pitch = Math.toDegrees(rotation.getY());
+        double roll = Math.toDegrees(rotation.getX());
 
         double YawRate = m_drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
         LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, pitch, 0, roll, 0);
 
 
         PoseEstimate estimate =
-            LimelightHelpers.getBotPoseEstimate_wpiBlue(m_limelightName);
+            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
 
             llPosePub.set(estimate.pose); // publish the pose to network tables
 
@@ -117,7 +117,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     public double getAvgTagDist() {
     if (m_latestMeasurement == null) return -1.0;
-    PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(m_limelightName);
+    PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
     return (estimate != null && estimate.tagCount > 0) ? estimate.avgTagDist : -1.0;
     }
 
@@ -125,7 +125,7 @@ public class VisionSubsystem extends SubsystemBase {
     return LimelightHelpers.getTX(m_limelightName); // horizontal offset in degrees
     }
     public int getTagCount() {
-        PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(m_limelightName);
+        PoseEstimate estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
     return estimate.tagCount ;
     }
 }

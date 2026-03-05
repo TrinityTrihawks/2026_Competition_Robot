@@ -4,22 +4,15 @@
 
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
-
 import choreo.util.ChoreoAllianceFlipUtil;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
-
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.AngleUnit;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,17 +20,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AutoAlign;
-import frc.robot.commands.HopperToShoot;
-import frc.robot.commands.IntakeToHopper;
-import frc.robot.commands.IntakeToShoot;
-import frc.robot.commands.InverseEverything;
-import frc.robot.commands.SmartShoot;
+import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
-import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+
+import java.util.function.DoubleSupplier;
 
 import static edu.wpi.first.units.Units.*;
 
