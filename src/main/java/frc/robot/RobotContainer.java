@@ -50,7 +50,6 @@ public class RobotContainer {
         private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
         
         
-        private Pose2d startpose;
         private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                       // speed
         private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per
@@ -106,7 +105,7 @@ public class RobotContainer {
 
         }
         public void initializeGyroPose() {
-                drivetrain.resetPose(new Pose2d(3.5, 4, new Rotation2d()));
+                Pose2d startpose = new Pose2d(3.5, 4, new Rotation2d());
                 if (ChoreoAllianceFlipUtil.shouldFlip()) {
                          startpose = ChoreoAllianceFlipUtil.flip(startpose);
                 }
