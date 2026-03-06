@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -152,7 +153,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
+        configureCurrentLimits();
     }
+    private void configureCurrentLimits() {
+    TalonFXConfiguration config = new TalonFXConfiguration();
+
+    config.CurrentLimits.SupplyCurrentLimit = 50;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+    
+    // Apply to all drive motors
+    for (var module : getModules()) {
+        module.getDriveMotor().getConfigurator().apply(config);
+    }
+}
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -177,6 +190,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
+        configureCurrentLimits();
     }
 
     /**
@@ -210,6 +224,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
+        configureCurrentLimits();
     }
     private void configureAutoBuilder() {
         try {
