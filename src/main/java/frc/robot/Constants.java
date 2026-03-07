@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class Constants {
     public static final double DEADBAND = 0.05;
@@ -8,6 +10,7 @@ public class Constants {
     public static final Translation2d BlUE_HUB = new Translation2d(4.63,4);
     public static final Translation2d RED_HUB = new Translation2d(11.91,4);
 
+    public static final Pose2d START_POSE = new Pose2d(3.5, 4, Rotation2d.fromDegrees(0));
     public static final class VisionConstants {
         public static final String LIMELIGHT_NAME = "limelight-main"; // navigate to Limeight Web Page to change which will be <limeight name>.local:5801
                                                                 
