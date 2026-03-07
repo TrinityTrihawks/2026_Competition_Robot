@@ -12,24 +12,14 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.util.FlippingUtil;
-
-import choreo.util.ChoreoAllianceFlipUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.AngleUnit;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -96,7 +86,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
-        setInitialPose();
+        initializeGyroPose();
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
         SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.3);
@@ -105,27 +95,17 @@ public class RobotContainer {
         SmartDashboard.putNumber("Speed in Voltage: Intake Motor", 0.666);
         SmartDashboard.putNumber("Speed in Voltage: Shooting Motor", 0.45833);
 
-        CommandScheduler.getInstance().registerSubsystem(m_vision);
-
+        configureBindings();
         }
         public void initializeGyroPose() {
-                Pose2d startpose = new Pose2d(3.5, 4, new Rotation2d());
+                Pose2d startpose = Constants.START_POSE;
                 if (ChoreoAllianceFlipUtil.shouldFlip()) {
                          startpose = ChoreoAllianceFlipUtil.flip(startpose);
                 }
                 drivetrain.resetPose(startpose);
         }
-        configureBindings();
-    }
+    
 
-    public void setInitialPose() {
-        Pose2d startPose = Constants.START_POSE;
-        if (ChoreoAllianceFlipUtil.shouldFlip()) {
-            startPose = ChoreoAllianceFlipUtil.flip(startPose);
-        }
-
-        drivetrain.resetPose(startPose);
-    }
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -187,5 +167,10 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return AutoBuilder.pathfindToPose(new Pose2d(2 , 4, new Rotation2d(Degrees.zero())), DynamicPathDemo.DEFAULT_CONSTRAINTS);
         return autoChooser.getSelected();
+    }
+
+    public SequentialCommandGroup AutoBuilderHumanStation () {
+
+        return new SequentialCommandGroup(AutoBuilder.pathfindToPose(null, DynamicPathDemo.DEFAULT_CONSTRAINTS));
     }
 }

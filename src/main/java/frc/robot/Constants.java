@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public class Constants {
     public static final double DEADBAND = 0.05;
     public static final int DEFAULT_SPEED_SCALER = 1;
-    public static final Translation2d BlUE_HUB = new Translation2d(4.63,4);
+    public static final Translation2d BLUE_HUB = new Translation2d(4.63,4);
     public static final Translation2d RED_HUB = new Translation2d(11.91,4);
 
     public static final Pose2d START_POSE = new Pose2d(3.5, 4, Rotation2d.fromDegrees(0));
