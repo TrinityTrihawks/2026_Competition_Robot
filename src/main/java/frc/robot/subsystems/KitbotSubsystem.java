@@ -21,11 +21,11 @@ public class KitbotSubsystem extends SubsystemBase {
   private DoubleSupplier getIndexspeed;
   private DoubleSupplier getShootingspeed;
 
-   private final SparkMax IntakeMotor = new SparkMax(22, MotorType.kBrushless);
+   private final SparkMax IntakeMotor = new SparkMax(21, MotorType.kBrushless);
 
    private final SparkMax IndexMotor = new SparkMax(23, MotorType.kBrushless);
 
-   private final SparkMax ShootingMotor = new SparkMax(21,MotorType.kBrushless);
+   private final SparkMax ShootingMotor = new SparkMax(22,MotorType.kBrushless);
 
    //Creates a new ExampleSubsystem. 
 

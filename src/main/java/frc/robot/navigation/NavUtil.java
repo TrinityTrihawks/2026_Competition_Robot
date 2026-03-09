@@ -37,5 +37,15 @@ public class NavUtil {
         Pose2d TargPose = new Pose2d(targX, targY, TargHead);
         return TargPose;
     } 
+    public static Pose2d HumanStationPose() {
+        Pose2d HumanStation;
+        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+            HumanStation = Constants.BLUE_HUMAN;
+        }
+        else {
+            HumanStation = Constants.RED_HUMAN;
+        }
+        return HumanStation;
+    }
     
 }

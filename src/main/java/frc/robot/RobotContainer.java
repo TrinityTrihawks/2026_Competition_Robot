@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.Set;
 import java.util.function.DoubleSupplier;
 
 import choreo.util.ChoreoAllianceFlipUtil;
@@ -15,11 +16,14 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -31,6 +35,7 @@ import frc.robot.commands.InverseEverything;
 import frc.robot.commands.SmartShoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.navigation.DynamicPathDemo;
+import frc.robot.navigation.NavUtil;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -84,6 +89,7 @@ public class RobotContainer {
 
 
         autoChooser = AutoBuilder.buildAutoChooser("");
+        autoChooser.addOption("Pathfinding Human Station to Shoot", AutoBuilderHumanStation());
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         initializeGyroPose();
@@ -150,7 +156,7 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.leftBumper().onTrue(Commands.runOnce(() -> drivetrain.seedFieldCentric()));
 
         joystick.rightTrigger().whileTrue(new AutoAlign(drivetrain, m_vision));
 
@@ -169,8 +175,13 @@ public class RobotContainer {
         return autoChooser.getSelected();
     }
 
-    public SequentialCommandGroup AutoBuilderHumanStation () {
-
-        return new SequentialCommandGroup(AutoBuilder.pathfindToPose(null, DynamicPathDemo.DEFAULT_CONSTRAINTS));
-    }
+    public Command AutoBuilderHumanStation() {
+    return Commands.defer(() -> new SequentialCommandGroup(
+        AutoBuilder.pathfindToPose(NavUtil.HumanStationPose(), DynamicPathDemo.DEFAULT_CONSTRAINTS),
+        new WaitCommand(5),
+        AutoBuilder.pathfindToPose(
+            NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),
+            DynamicPathDemo.DEFAULT_CONSTRAINTS)
+    ), Set.of(drivetrain));
+}
 }
