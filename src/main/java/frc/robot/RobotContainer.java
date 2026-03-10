@@ -11,8 +11,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,6 +62,11 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+    private final PIDController aimPID = new PIDController(7, 0, 0);
+    {
+        aimPID.enableContinuousInput(-Math.PI, Math.PI);
+    }
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
@@ -107,18 +116,35 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive
-                                .withVelocityX(Math.pow(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1), 3)
-                                        * MaxSpeed * speedSupplier.getAsDouble()) // Drive forward with negative
-                                // y
-                                .withVelocityY(Math.pow(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1), 3)
-                                        * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
-                                // (left)
-                                .withRotationalRate(Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
-                                        * MaxAngularRate * angularSpeedSupplier.getAsDouble()) // Drive
-                        // counterclockwise with
-                        // negative X
-                ));
+                drivetrain.applyRequest(() -> {
+                    double velocityX = Math.pow(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1), 3)
+                            * MaxSpeed * speedSupplier.getAsDouble();
+                    double velocityY = Math.pow(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1), 3)
+                            * MaxSpeed * speedSupplier.getAsDouble();
+
+                    double rotationRate;
+                    if (joystick.getLeftTriggerAxis() > 0.5) {
+                        // Aim-assist: auto-rotate to face the target hub
+                        Translation2d target = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red
+                                ? Constants.RED_HUB : Constants.BLUE_HUB;
+                        Pose2d pose = drivetrain.getState().Pose;
+                        double desiredHeading = Math.atan2(
+                                target.getY() - pose.getY(),
+                                target.getX() - pose.getX());
+                        double currentHeading = pose.getRotation().getRadians();
+                        rotationRate = aimPID.calculate(currentHeading, desiredHeading);
+                        rotationRate = MathUtil.clamp(rotationRate, -MaxAngularRate, MaxAngularRate);
+                    } else {
+                        // Normal: right stick controls rotation
+                        rotationRate = Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
+                                * MaxAngularRate * angularSpeedSupplier.getAsDouble();
+                    }
+
+                    return drive
+                            .withVelocityX(velocityX)
+                            .withVelocityY(velocityY)
+                            .withRotationalRate(rotationRate);
+                }));
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
