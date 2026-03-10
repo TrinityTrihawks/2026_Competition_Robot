@@ -11,7 +11,7 @@ public class NavUtil {
 
 
     public static Pose2d FindShootTarget(Translation2d RobotXY) {
-        Translation2d OutputTranslation = Constants.BlUE_HUB.minus(RobotXY);
+        Translation2d OutputTranslation = Constants.BLUE_HUB.minus(RobotXY);
         double X = OutputTranslation.getX();
         double Y = OutputTranslation.getY();
         double theta = Math.atan2(Y, X);
