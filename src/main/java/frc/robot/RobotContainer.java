@@ -89,7 +89,7 @@ public class RobotContainer {
 
 
         autoChooser = AutoBuilder.buildAutoChooser("");
-        autoChooser.addOption("Pathfinding Human Station to Shoot", AutoBuilderHumanStation());
+        autoChooser.addOption("PathfindingHumanStationtoShoot", AutoBuilderHumanStation());
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         initializeGyroPose();
