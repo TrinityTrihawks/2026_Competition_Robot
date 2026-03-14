@@ -9,7 +9,7 @@ public class Constants {
     public static final int DEFAULT_SPEED_SCALER = 1;
     public static final Translation2d BLUE_HUB = new Translation2d(4.63,4);
     public static final Translation2d RED_HUB = new Translation2d(11.91,4);
-    public static final Pose2d BLUE_HUMAN = new Pose2d(0.5,0.6, Rotation2d.fromDegrees(180));
+    public static final Pose2d BLUE_HUMAN = new Pose2d(0.5,0.96, Rotation2d.fromDegrees(180));
     public static final Pose2d RED_HUMAN = new Pose2d(16,7.5, Rotation2d.fromDegrees(0));
     
 

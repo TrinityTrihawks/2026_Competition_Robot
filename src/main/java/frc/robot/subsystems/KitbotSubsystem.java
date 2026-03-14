@@ -68,7 +68,7 @@ public class KitbotSubsystem extends SubsystemBase {
    }
 
    public void intakeToHopper(){
-   ShootingMotor.set(getIntakespeed.getAsDouble()); // runs to not drag intake motor
+   ShootingMotor.set(-getIntakespeed.getAsDouble()); // runs to not drag intake motor
    IntakeMotor.set(getIntakespeed.getAsDouble());
    IndexMotor.set(-getIndexspeed.getAsDouble());
    }
