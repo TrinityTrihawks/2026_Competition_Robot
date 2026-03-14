@@ -44,9 +44,9 @@ import static edu.wpi.first.units.Units.*;
 
 public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-            () -> SmartDashboard.getNumber("Speed in Voltage: Index Motor", 0.625),
-            () -> SmartDashboard.getNumber("Speed in Voltage: Intake Motor", 0.666),
-            () -> SmartDashboard.getNumber("Speed in Voltage: Shooting Motor", 0.45833));
+            () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.625),
+            () -> SmartDashboard.getNumber("Speed%: Intake Motor", 0.666),
+            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.45833));
 
     private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
     private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
@@ -179,9 +179,8 @@ public class RobotContainer {
     return Commands.defer(() -> new SequentialCommandGroup(
         AutoBuilder.pathfindToPose(NavUtil.HumanStationPose(), DynamicPathDemo.DEFAULT_CONSTRAINTS),
         new WaitCommand(5),
-        AutoBuilder.pathfindToPose(
-            NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),
-            DynamicPathDemo.DEFAULT_CONSTRAINTS)
-    ), Set.of(drivetrain));
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS)), 
+
+        Set.of(drivetrain));
 }
 }

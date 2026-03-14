@@ -63,24 +63,24 @@ public class KitbotSubsystem extends SubsystemBase {
   }
 
    public void intakeToShoot() {
-    IntakeMotor.set(getIntakespeed.getAsDouble());
-    ShootingMotor.set(getShootingspeed.getAsDouble());
+    IntakeMotor.set(getShootingspeed.getAsDouble()); // set as shooting speed so both dont fight
+    ShootingMotor.set(-getShootingspeed.getAsDouble());
    }
 
    public void intakeToHopper(){
    IntakeMotor.set(getIntakespeed.getAsDouble());
-   IndexMotor.set(getIndexspeed.getAsDouble());
+   IndexMotor.set(-getIndexspeed.getAsDouble());
    }
    public void inverseEverything(){
    ShootingMotor.set(-getShootingspeed.getAsDouble());
-   IndexMotor.set(-getIndexspeed.getAsDouble());
+   IndexMotor.set(getIndexspeed.getAsDouble());
    IntakeMotor.set(-getIntakespeed.getAsDouble());
 
    }
    public void hopperToShoot() {
-     ShootingMotor.set(getShootingspeed.getAsDouble());
-     IndexMotor.set(-getIndexspeed.getAsDouble());
-     IntakeMotor.set(getIntakespeed.getAsDouble());
+     ShootingMotor.set(-getShootingspeed.getAsDouble());
+     IndexMotor.set(getIndexspeed.getAsDouble());
+     IntakeMotor.set(getShootingspeed.getAsDouble());
    }
    public void stopMotors() {
     ShootingMotor.set(0);
