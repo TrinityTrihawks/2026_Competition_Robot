@@ -13,6 +13,6 @@ import frc.robot.subsystems.VisionSubsystem;
 public class SmartShoot extends SequentialCommandGroup {
 
   public SmartShoot(CommandSwerveDrivetrain m_drive, VisionSubsystem m_vision, KitbotSubsystem m_kitbot, double targetDist) {
-    addCommands(new KeepDistance(m_drive,m_vision, targetDist), new HopperToShoot(m_kitbot));
+    addCommands(new KeepDistance(m_drive,m_vision, targetDist));
   }
 }

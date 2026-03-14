@@ -30,10 +30,10 @@ public class NavUtil {
         double x = ShootingDist * Math.cos(theta);
         double y = ShootingDist * Math.sin(theta);
 
-        double targX = X - x;
-        double targY = Y - y;
+        double targX = TargetHub.getX() - x;
+        double targY = TargetHub.getY() - y;
 
-        Rotation2d TargHead = new Rotation2d(theta);
+        Rotation2d TargHead = new Rotation2d(theta + Math.PI);
         Pose2d TargPose = new Pose2d(targX, targY, TargHead);
         return TargPose;
     } 
