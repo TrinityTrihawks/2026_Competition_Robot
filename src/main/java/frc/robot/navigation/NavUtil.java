@@ -33,7 +33,7 @@ public class NavUtil {
         double targX = TargetHub.getX() - x;
         double targY = TargetHub.getY() - y;
 
-        Rotation2d TargHead = new Rotation2d(theta + Math.PI);
+        Rotation2d TargHead = new Rotation2d(theta);
         Pose2d TargPose = new Pose2d(targX, targY, TargHead);
         return TargPose;
     } 

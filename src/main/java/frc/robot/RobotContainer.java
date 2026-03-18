@@ -46,7 +46,7 @@ public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
             () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.625),
             () -> SmartDashboard.getNumber("Speed%: Intake Motor", 0.666),
-            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.45833));
+            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.9));
 
     private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
     private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
@@ -86,6 +86,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
         NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
         NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
+        NamedCommands.registerCommand("PathfindToShoot", AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS));
 
 
         autoChooser = AutoBuilder.buildAutoChooser("");
@@ -99,7 +100,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
         SmartDashboard.putNumber("Speed%: Index Motor", 0.625);
         SmartDashboard.putNumber("Speed%: Intake Motor", 0.666);
-        SmartDashboard.putNumber("Speed%: Shooting Motor", 0.45833);
+        SmartDashboard.putNumber("Speed%: Shooting Motor", 0.9);
         SmartDashboard.putNumber("Indexer Delay: Seconds", 0.4);
 
         configureBindings();
@@ -180,7 +181,8 @@ public class RobotContainer {
     return Commands.defer(() -> new SequentialCommandGroup(
         AutoBuilder.pathfindToPose(NavUtil.HumanStationPose(), DynamicPathDemo.DEFAULT_CONSTRAINTS),
         new WaitCommand(5),
-        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS)), 
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
+        new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)).withTimeout(8)), 
 
         Set.of(drivetrain));
 }
