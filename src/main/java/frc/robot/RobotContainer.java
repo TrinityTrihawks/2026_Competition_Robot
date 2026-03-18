@@ -86,7 +86,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
         NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
         NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
-        NamedCommands.registerCommand("PathfindToShoot", AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS));
+        NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () -> 
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
+        Set.of(drivetrain)));
 
 
         autoChooser = AutoBuilder.buildAutoChooser("");
@@ -160,7 +162,9 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(Commands.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.rightTrigger().whileTrue(new AutoAlign(drivetrain, m_vision));
+        joystick.rightTrigger().whileTrue(Commands.defer( () -> 
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
+        Set.of(drivetrain)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -181,7 +185,9 @@ public class RobotContainer {
     return Commands.defer(() -> new SequentialCommandGroup(
         AutoBuilder.pathfindToPose(NavUtil.HumanStationPose(), DynamicPathDemo.DEFAULT_CONSTRAINTS),
         new WaitCommand(5),
+        Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
+        Set.of(drivetrain)),
         new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)).withTimeout(8)), 
 
         Set.of(drivetrain));
