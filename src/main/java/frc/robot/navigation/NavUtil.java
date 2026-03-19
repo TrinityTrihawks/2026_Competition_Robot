@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 
 public class NavUtil {
-    private static final double ShootingDist = 2.9; //meters
+    private static final double ShootingDist = 2.95; //meters
     private static Translation2d TargetHub;
 
     private NavUtil() {}

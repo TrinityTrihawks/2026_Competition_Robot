@@ -17,6 +17,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -80,6 +82,8 @@ public class RobotContainer {
 
     private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
+    private final SendableChooser<Boolean> Left_or_RightChooser = new SendableChooser<>();
+
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
@@ -89,11 +93,16 @@ public class RobotContainer {
         NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
         Set.of(drivetrain)));
+        NamedCommands.registerCommand("PathfindToCenter2nd", PathfindToCenter2nd());
 
 
         autoChooser = AutoBuilder.buildAutoChooser("");
         autoChooser.addOption("PathfindingHumanStationtoShoot", AutoBuilderHumanStation());
         SmartDashboard.putData("Auto Mode", autoChooser);
+
+        Left_or_RightChooser.setDefaultOption("Left", true);
+        Left_or_RightChooser.addOption("Right", false);
+        SmartDashboard.putData("Left or Right Auto Chooser", Left_or_RightChooser);
 
         initializeGyroPose();
 
@@ -179,6 +188,30 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return AutoBuilder.pathfindToPose(new Pose2d(2 , 4, new Rotation2d(Degrees.zero())), DynamicPathDemo.DEFAULT_CONSTRAINTS);
         return autoChooser.getSelected();
+    }
+
+    public Command PathfindToCenter2nd() {
+        return Commands.defer(() -> {
+                Pose2d centerpose;
+        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+                if (Left_or_RightChooser.getSelected() == true) {
+                        centerpose = Constants.BLUE_LEFT_CENTER;
+                }
+                else {
+                        centerpose = Constants.BLUE_RIGHT_CENTER;
+                }
+        }
+        else{
+                if(Left_or_RightChooser.getSelected() == true) {
+                        centerpose = Constants.RED_LEFT_CENTER;
+                }
+                else{
+                        centerpose = Constants.RED_RIGHT_CENTER;
+                }
+        }
+
+        return AutoBuilder.pathfindToPose(centerpose,DynamicPathDemo.DEFAULT_CONSTRAINTS);},
+        Set.of(drivetrain));
     }
 
     public Command AutoBuilderHumanStation() {
