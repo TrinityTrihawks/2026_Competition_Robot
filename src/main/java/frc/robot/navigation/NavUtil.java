@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 
 public class NavUtil {
-    private static final double ShootingDist = 3.5; //meters
+    private static final double ShootingDist = 2.95; //meters
     private static Translation2d TargetHub;
 
     private NavUtil() {}
@@ -30,8 +30,8 @@ public class NavUtil {
         double x = ShootingDist * Math.cos(theta);
         double y = ShootingDist * Math.sin(theta);
 
-        double targX = X - x;
-        double targY = Y - y;
+        double targX = TargetHub.getX() - x;
+        double targY = TargetHub.getY() - y;
 
         Rotation2d TargHead = new Rotation2d(theta);
         Pose2d TargPose = new Pose2d(targX, targY, TargHead);

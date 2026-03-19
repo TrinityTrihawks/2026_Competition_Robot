@@ -6,6 +6,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -45,14 +46,12 @@ public class VisionSubsystem extends SubsystemBase {
     public void periodic() { // for periodic methods if it returns it cuts the loop back to the start
         m_latestMeasurement = null;
 
-        Rotation3d rotation = m_drivetrain.getRotation3d();
+        Rotation2d rotation = m_drivetrain.getState().Pose.getRotation();
 
-        double yaw = Math.toDegrees(rotation.getZ());
-        double pitch = Math.toDegrees(rotation.getY());
-        double roll = Math.toDegrees(rotation.getX());
-
+        double yaw = rotation.getDegrees();
+        
         double YawRate = m_drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
-        LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, pitch, 0, roll, 0);
+        LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, 0, 0, 0, 0);
 
 
         PoseEstimate estimate =
