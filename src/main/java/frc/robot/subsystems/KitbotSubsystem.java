@@ -5,14 +5,10 @@ import com.revrobotics.spark.SparkMax;
 
 import java.util.function.DoubleSupplier;
 
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 
 public class KitbotSubsystem extends SubsystemBase {
 

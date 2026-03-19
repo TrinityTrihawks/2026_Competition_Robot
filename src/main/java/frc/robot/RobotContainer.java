@@ -16,7 +16,6 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,18 +28,15 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AutoAlign;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
 import frc.robot.commands.IntakeToShoot;
 import frc.robot.commands.InverseEverything;
-import frc.robot.commands.SmartShoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.navigation.NavUtil;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -79,8 +75,6 @@ public class RobotContainer {
     private final CommandXboxController subsController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
-    private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
     private final SendableChooser<Boolean> Left_or_RightChooser = new SendableChooser<>();
 
@@ -181,8 +175,6 @@ public class RobotContainer {
         subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem,() -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
         subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
         subsController.x().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
-        subsController.rightBumper().whileTrue(new SmartShoot(drivetrain, m_vision, m_KitbotSubsystem, 3.5));
-        subsController.leftBumper().whileTrue(new SmartShoot(drivetrain, m_vision, m_KitbotSubsystem, 6.5));
     }
 
     public Command getAutonomousCommand() {
