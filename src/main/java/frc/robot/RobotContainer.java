@@ -44,7 +44,7 @@ public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
             () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.625),
             () -> SmartDashboard.getNumber("Speed%: Intake Motor", 0.666),
-            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.9));
+            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.87));
 
     private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
     private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
@@ -105,7 +105,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
         SmartDashboard.putNumber("Speed%: Index Motor", 0.625);
         SmartDashboard.putNumber("Speed%: Intake Motor", 0.666);
-        SmartDashboard.putNumber("Speed%: Shooting Motor", 0.9);
+        SmartDashboard.putNumber("Speed%: Shooting Motor", 0.87);
         SmartDashboard.putNumber("Indexer Delay: Seconds", 0.4);
 
         configureBindings();
