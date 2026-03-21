@@ -18,6 +18,12 @@ public class NavUtil {
 
 
     public static Pose2d FindShootTarget(Translation2d RobotXY) {
+        if ( DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+            TargetHub = Constants.BLUE_HUB;
+        }
+        else {
+            TargetHub = Constants.RED_HUB;
+        }
         Translation2d OutputTranslation = TargetHub.minus(RobotXY);
         double X = OutputTranslation.getX();
         double Y = OutputTranslation.getY();
@@ -34,7 +40,10 @@ public class NavUtil {
         return TargPose;
     } 
     public static Pose2d HumanStationPose() {
+        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
         return Constants.BLUE_HUMAN;
+    }
+    return Constants.RED_HUMAN;
     }
     
 }

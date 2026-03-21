@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AlignShooting;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
 import frc.robot.commands.IntakeToShoot;
@@ -167,9 +168,7 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(Commands.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.rightTrigger().whileTrue(Commands.defer( () -> 
-        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
-        Set.of(drivetrain)));
+        joystick.rightTrigger().whileTrue(new AlignShooting(drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

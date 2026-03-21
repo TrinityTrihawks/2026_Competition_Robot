@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PickupCenterFromLeft"
+                  "pathName": "PickupCenterFromRight"
                 }
               },
               {
@@ -46,31 +46,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathfindToCenter2nd"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntaketoHopper"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PathfindToShoot"
           }
         }
       ]
