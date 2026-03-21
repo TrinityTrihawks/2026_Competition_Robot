@@ -134,7 +134,7 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
                                 .withVelocityY(yLimiter.calculate(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                 // (left)
-                                .withRotationalRate(rotLimiter.calculate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1))
+                                .withRotationalRate((MathUtil.applyDeadband(-joystick.getRightX(), 0.1))
                                         * MaxAngularRate * angularSpeedSupplier.getAsDouble()) // Drive
                         // counterclockwise with
                         // negative X
