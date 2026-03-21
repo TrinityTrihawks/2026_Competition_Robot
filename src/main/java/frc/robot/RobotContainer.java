@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -80,6 +81,11 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
+    // Add these three fields near your other drivetrain fields (e.g. below the `logger` line)
+private final SlewRateLimiter xLimiter = new SlewRateLimiter(3); // units: fraction/sec
+private final SlewRateLimiter yLimiter = new SlewRateLimiter(3);
+private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+
     public RobotContainer() {
         NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
         NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
@@ -126,13 +132,13 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                                .withVelocityX(Math.pow(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1), 3)
+                                .withVelocityX(xLimiter.calculate(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive forward with negative
                                 // y
-                                .withVelocityY(Math.pow(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1), 3)
+                                .withVelocityY(yLimiter.calculate(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                 // (left)
-                                .withRotationalRate(Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
+                                .withRotationalRate(rotLimiter.calculate(MathUtil.applyDeadband(-joystick.getRightX(), 0.1))
                                         * MaxAngularRate * angularSpeedSupplier.getAsDouble()) // Drive
                         // counterclockwise with
                         // negative X
