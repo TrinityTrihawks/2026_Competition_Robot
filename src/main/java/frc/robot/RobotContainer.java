@@ -47,8 +47,8 @@ public class RobotContainer {
             () -> SmartDashboard.getNumber("Speed%: Intake Motor", 0.666),
             () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.87));
 
-    private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
-    private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
+    private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.4);
+    private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.45);
 
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -107,8 +107,8 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         initializeGyroPose();
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.3);
-        SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
+        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.4);
+        SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.45);
         SmartDashboard.putNumber("Speed%: Index Motor", 0.625);
         SmartDashboard.putNumber("Speed%: Intake Motor", 0.666);
         SmartDashboard.putNumber("Speed%: Shooting Motor", 0.87);

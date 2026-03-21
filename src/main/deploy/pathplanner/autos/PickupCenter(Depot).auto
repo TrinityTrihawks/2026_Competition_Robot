@@ -24,12 +24,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PathfindToShoot"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
