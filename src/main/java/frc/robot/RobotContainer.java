@@ -117,11 +117,7 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         configureBindings();
         }
         public void initializeGyroPose() {
-                Pose2d startpose = Constants.START_POSE;
-                if (ChoreoAllianceFlipUtil.shouldFlip()) {
-                         startpose = ChoreoAllianceFlipUtil.flip(startpose);
-                }
-                drivetrain.resetPose(startpose);
+                drivetrain.resetPose(Constants.START_POSE);
         }
     
 
@@ -191,22 +187,13 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
     public Command PathfindToCenter2nd() {
         return Commands.defer(() -> {
                 Pose2d centerpose;
-        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+        
                 if (Left_or_RightChooser.getSelected() == true) {
                         centerpose = Constants.BLUE_LEFT_CENTER;
                 }
                 else {
                         centerpose = Constants.BLUE_RIGHT_CENTER;
                 }
-        }
-        else{
-                if(Left_or_RightChooser.getSelected() == true) {
-                        centerpose = Constants.RED_LEFT_CENTER;
-                }
-                else{
-                        centerpose = Constants.RED_RIGHT_CENTER;
-                }
-        }
 
         return AutoBuilder.pathfindToPose(centerpose,DynamicPathDemo.DEFAULT_CONSTRAINTS);},
         Set.of(drivetrain));
