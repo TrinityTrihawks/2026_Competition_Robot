@@ -64,16 +64,32 @@
     },
     {
       "anchor": {
-        "x": 2.8194835680751185,
-        "y": 7.3883450704225355
+        "x": 3.316384615384617,
+        "y": 7.196725352112676
       },
       "prevControl": {
-        "x": 3.947910798122064,
-        "y": 7.367053990610328
+        "x": 3.5954615384615396,
+        "y": 7.558346153846154
+      },
+      "nextControl": {
+        "x": 2.9559255665930397,
+        "y": 6.729651655086969
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.316384615384617,
+        "y": 5.279217948717949
+      },
+      "prevControl": {
+        "x": 3.23498717948718,
+        "y": 6.25598717948718
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ShootingHuman"
     }
   ],
   "rotationTargets": [
@@ -99,7 +115,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.7269699799433
+    "rotation": -46.432096184164664
   },
   "reversed": false,
   "folder": null,

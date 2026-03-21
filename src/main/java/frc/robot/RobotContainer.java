@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AlignShooting;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
 import frc.robot.commands.IntakeToShoot;
@@ -129,10 +128,10 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                                .withVelocityX(xLimiter.calculate(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1))
+                                .withVelocityX((MathUtil.applyDeadband(-joystick.getLeftY(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive forward with negative
                                 // y
-                                .withVelocityY(yLimiter.calculate(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1))
+                                .withVelocityY((MathUtil.applyDeadband(-joystick.getLeftX(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                 // (left)
                                 .withRotationalRate((MathUtil.applyDeadband(-joystick.getRightX(), 0.1))
@@ -168,7 +167,9 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(Commands.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.rightTrigger().whileTrue(new AlignShooting(drivetrain));
+        joystick.rightTrigger().whileTrue(Commands.defer( () -> 
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
+        Set.of(drivetrain)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

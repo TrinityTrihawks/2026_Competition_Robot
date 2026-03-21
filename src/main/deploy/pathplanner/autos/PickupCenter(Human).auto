@@ -47,6 +47,25 @@
               }
             ]
           }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center2nd(Human)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntaketoHopper"
+                }
+              }
+            ]
+          }
         }
       ]
     }

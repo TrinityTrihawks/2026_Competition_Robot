@@ -47,6 +47,25 @@
               }
             ]
           }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2ndCenter(Depot)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntaketoHopper"
+                }
+              }
+            ]
+          }
         }
       ]
     }
