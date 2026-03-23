@@ -11,7 +11,6 @@ public class HopperToShoot extends Command {
     private final KitbotSubsystem kitbot;
     private DoubleSupplier seconds;
     private final Timer timer = new Timer();
-    private boolean indexEngaged = false;
 
     public HopperToShoot(KitbotSubsystem kitbot, DoubleSupplier seconds) {
         this.kitbot = kitbot;
@@ -21,7 +20,7 @@ public class HopperToShoot extends Command {
 
     @Override
     public void initialize() {
-        // runs ONCE when button is first pressed
+        // runs ONCE when button is first pressed and agian every time its pressed
         timer.reset();
         timer.start();
     }
@@ -29,7 +28,7 @@ public class HopperToShoot extends Command {
     @Override
     public void execute() {
         kitbot.revUpShooter();
-        // loops while button is held
+        // loops while button is held so it will run only when timer is above the set threshold
         if (timer.get() >= seconds.getAsDouble()) {
             kitbot.engageIndexer();
         }

@@ -10,11 +10,10 @@ public class Constants {
     public static final Translation2d BLUE_HUB = new Translation2d(4.63,4);
     public static final Translation2d RED_HUB = new Translation2d(11.91,4);
     public static final Pose2d BLUE_HUMAN = new Pose2d(0.05,0.45, Rotation2d.fromDegrees(180));
-    public static final Pose2d RED_HUMAN = new Pose2d(16,7.5, Rotation2d.fromDegrees(0));
-    public static final Pose2d BLUE_LEFT_CENTER = new Pose2d(7.8,4.4, Rotation2d.fromDegrees(-90));
-    public static final Pose2d BLUE_RIGHT_CENTER = new Pose2d(7.8,3.6, Rotation2d.fromDegrees(0));
-    public static final Pose2d RED_LEFT_CENTER= new Pose2d(8.8,3.6, Rotation2d.fromDegrees(0));
-    public static final Pose2d RED_RIGHT_CENTER = new Pose2d(8.8,4.4, Rotation2d.fromDegrees(0));
+    public static final Pose2d RED_HUMAN = new Pose2d(16 , 7.35 , Rotation2d.fromDegrees(0));
+    public static final Pose2d BLUE_LEFT_CENTER = new Pose2d(7.8,4.4, Rotation2d.fromDegrees(90));
+    public static final Pose2d BLUE_RIGHT_CENTER = new Pose2d(7.8,3.6, Rotation2d.fromDegrees(-90));
+    
 
     
 

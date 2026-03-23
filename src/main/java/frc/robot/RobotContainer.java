@@ -14,9 +14,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,12 +29,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AutoAlign;
 import frc.robot.commands.HopperToShoot;
 import frc.robot.commands.IntakeToHopper;
 import frc.robot.commands.IntakeToShoot;
 import frc.robot.commands.InverseEverything;
-import frc.robot.commands.SmartShoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.navigation.NavUtil;
@@ -46,12 +44,12 @@ import static edu.wpi.first.units.Units.*;
 
 public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-            () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.625),
+            () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.55),
             () -> SmartDashboard.getNumber("Speed%: Intake Motor", 0.666),
-            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.9));
+            () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.87));
 
-    private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.1);
-    private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.1);
+    private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.45);
+    private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
 
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -86,9 +84,14 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
+    // Add these three fields near your other drivetrain fields (e.g. below the `logger` line)
+private final SlewRateLimiter xLimiter = new SlewRateLimiter(3); // units: fraction/sec
+private final SlewRateLimiter yLimiter = new SlewRateLimiter(3);
+private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+
     public RobotContainer() {
         NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
-        NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
+        NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.7)));
         NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
         NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
@@ -107,21 +110,17 @@ public class RobotContainer {
         initializeGyroPose();
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.3);
-        SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
-        SmartDashboard.putNumber("Speed%: Index Motor", 0.625);
+        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.45);
+        SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.40);
+        SmartDashboard.putNumber("Speed%: Index Motor", 0.55);
         SmartDashboard.putNumber("Speed%: Intake Motor", 0.666);
-        SmartDashboard.putNumber("Speed%: Shooting Motor", 0.9);
-        SmartDashboard.putNumber("Indexer Delay: Seconds", 0.4);
+        SmartDashboard.putNumber("Speed%: Shooting Motor", 0.87);
+        SmartDashboard.putNumber("Indexer Delay: Seconds", 0.7);
 
         configureBindings();
         }
         public void initializeGyroPose() {
-                Pose2d startpose = Constants.START_POSE;
-                if (ChoreoAllianceFlipUtil.shouldFlip()) {
-                         startpose = ChoreoAllianceFlipUtil.flip(startpose);
-                }
-                drivetrain.resetPose(startpose);
+                drivetrain.resetPose(Constants.START_POSE);
         }
     
 
@@ -132,13 +131,13 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                                .withVelocityX(Math.pow(MathUtil.applyDeadband(-joystick.getLeftY(), 0.1), 3)
+                                .withVelocityX((MathUtil.applyDeadband(-joystick.getLeftY(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive forward with negative
                                 // y
-                                .withVelocityY(Math.pow(MathUtil.applyDeadband(-joystick.getLeftX(), 0.1), 3)
+                                .withVelocityY((MathUtil.applyDeadband(-joystick.getLeftX(), 0.1))
                                         * MaxSpeed * speedSupplier.getAsDouble()) // Drive left with negative X
                                 // (left)
-                                .withRotationalRate(Math.pow(MathUtil.applyDeadband(-joystick.getRightX(), 0.1), 3)
+                                .withRotationalRate((MathUtil.applyDeadband(-joystick.getRightX(), 0.1))
                                         * MaxAngularRate * angularSpeedSupplier.getAsDouble()) // Drive
                         // counterclockwise with
                         // negative X
@@ -178,11 +177,9 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         subsController.leftTrigger().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
-        subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem,() -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
+        subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem,() -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.7)));
         subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
         subsController.x().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
-        subsController.rightBumper().whileTrue(new SmartShoot(drivetrain, m_vision, m_KitbotSubsystem, 3.5));
-        subsController.leftBumper().whileTrue(new SmartShoot(drivetrain, m_vision, m_KitbotSubsystem, 6.5));
     }
 
     public Command getAutonomousCommand() {
@@ -193,22 +190,13 @@ public class RobotContainer {
     public Command PathfindToCenter2nd() {
         return Commands.defer(() -> {
                 Pose2d centerpose;
-        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+        
                 if (Left_or_RightChooser.getSelected() == true) {
                         centerpose = Constants.BLUE_LEFT_CENTER;
                 }
                 else {
                         centerpose = Constants.BLUE_RIGHT_CENTER;
                 }
-        }
-        else{
-                if(Left_or_RightChooser.getSelected() == true) {
-                        centerpose = Constants.RED_LEFT_CENTER;
-                }
-                else{
-                        centerpose = Constants.RED_RIGHT_CENTER;
-                }
-        }
 
         return AutoBuilder.pathfindToPose(centerpose,DynamicPathDemo.DEFAULT_CONSTRAINTS);},
         Set.of(drivetrain));
@@ -221,7 +209,7 @@ public class RobotContainer {
         Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
         Set.of(drivetrain)),
-        new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)).withTimeout(8)), 
+        new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.7)).withTimeout(8)), 
 
         Set.of(drivetrain));
 }

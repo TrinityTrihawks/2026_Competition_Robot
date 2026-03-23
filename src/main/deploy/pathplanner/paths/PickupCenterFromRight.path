@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.448251173708922,
+        "x": 4.4675769230769244,
         "y": 0.6086866059817952
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.993335699066528,
-        "y": 0.4435630689206791
+        "x": 6.021459792855437,
+        "y": 0.6086866059817952
       },
       "isLocked": false,
-      "linkedName": "CenterShoot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -48,15 +48,15 @@
     },
     {
       "anchor": {
-        "x": 5.6086150234741785,
+        "x": 5.735051282051284,
         "y": 0.6086866059817952
       },
       "prevControl": {
-        "x": 6.667566656677928,
+        "x": 6.794002915255033,
         "y": 0.5547348383276953
       },
       "nextControl": {
-        "x": 4.549663390270429,
+        "x": 4.676099648847535,
         "y": 0.6626383736358952
       },
       "isLocked": false,
@@ -64,16 +64,32 @@
     },
     {
       "anchor": {
-        "x": 2.617218309859156,
-        "y": 0.6086866059817952
+        "x": 3.0517912218268095,
+        "y": 0.7856046814044213
       },
       "prevControl": {
-        "x": 3.149495305164321,
-        "y": 0.607136150234743
+        "x": 3.2919265179386947,
+        "y": 0.35509850271465565
+      },
+      "nextControl": {
+        "x": 2.795970709006296,
+        "y": 1.244230769230769
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.6070641025641033,
+        "y": 2.5117051282051284
+      },
+      "prevControl": {
+        "x": 2.4006117346473212,
+        "y": 2.0688401770234495
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ShootingDepot"
     }
   ],
   "rotationTargets": [
@@ -84,13 +100,17 @@
     {
       "waypointRelativePos": 2.0676328502415475,
       "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 3.371010638297887,
+      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.4,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -99,7 +119,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -178.5416361697974
+    "rotation": 41.63353933657014
   },
   "reversed": false,
   "folder": null,
@@ -107,5 +127,5 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
