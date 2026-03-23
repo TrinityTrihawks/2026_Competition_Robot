@@ -46,8 +46,8 @@ public class ShakeDrivetrain extends Command {
 
         m_drivetrain.setControl(
             new SwerveRequest.RobotCentric()
-                .withVelocityX(0.0)
-                .withVelocityY(strafe)
+                .withVelocityY(0.0)
+                .withVelocityX(strafe)
                 .withRotationalRate(0.0)
         );
     }

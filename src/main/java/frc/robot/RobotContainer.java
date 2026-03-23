@@ -29,10 +29,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.HopperToShoot;
-import frc.robot.commands.IntakeToHopper;
-import frc.robot.commands.IntakeToShoot;
-import frc.robot.commands.InverseEverything;
+import frc.robot.commands.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.navigation.NavUtil;
@@ -81,16 +78,13 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
-    // Add these three fields near your other drivetrain fields (e.g. below the `logger` line)
-private final SlewRateLimiter xLimiter = new SlewRateLimiter(3); // units: fraction/sec
-private final SlewRateLimiter yLimiter = new SlewRateLimiter(3);
-private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
     public RobotContainer() {
         NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
         NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_INDEXER_DELAY, Constants.SmartDashboardConstants.DEFAULT_INDEXER_DELAY)));
         NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
-        NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () -> 
+        NamedCommands.registerCommand("Shake", new ShakeDrivetrain(drivetrain));
+        NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () ->
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
         Set.of(drivetrain)));
 

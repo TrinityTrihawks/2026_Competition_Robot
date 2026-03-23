@@ -25,6 +25,12 @@
                 "data": {
                   "name": "HoppertoShoot"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shake"
+                }
               }
             ]
           }
