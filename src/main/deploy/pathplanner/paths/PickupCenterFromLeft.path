@@ -48,32 +48,48 @@
     },
     {
       "anchor": {
-        "x": 5.917335680751174,
-        "y": 7.5160915492957745
+        "x": 6.3441043890865965,
+        "y": 7.3883450704225355
       },
       "prevControl": {
-        "x": 6.9762873139549235,
-        "y": 7.462139781641675
+        "x": 7.404257431704224,
+        "y": 7.369243213798794
       },
       "nextControl": {
-        "x": 4.858384047547425,
-        "y": 7.570043316949874
+        "x": 5.2897046057713215,
+        "y": 7.407343264716505
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.8194835680751185,
-        "y": 7.3883450704225355
+        "x": 3.130333333333334,
+        "y": 7.196725352112676
       },
       "prevControl": {
-        "x": 3.947910798122064,
-        "y": 7.367053990610328
+        "x": 3.409410256410257,
+        "y": 7.558346153846154
+      },
+      "nextControl": {
+        "x": 2.769874284541757,
+        "y": 6.729651655086969
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.769858974358976,
+        "y": 5.41875641025641
+      },
+      "prevControl": {
+        "x": 2.688461538461539,
+        "y": 6.395525641025642
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ShootingHuman"
     }
   ],
   "rotationTargets": [
@@ -84,13 +100,17 @@
     {
       "waypointRelativePos": 2.0676328502415475,
       "rotationDegrees": 90.16349527900519
+    },
+    {
+      "waypointRelativePos": 3.4840425531914914,
+      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.4,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -99,7 +119,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.7269699799433
+    "rotation": -46.432096184164664
   },
   "reversed": false,
   "folder": null,
@@ -107,5 +127,5 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

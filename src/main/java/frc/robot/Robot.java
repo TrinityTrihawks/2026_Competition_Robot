@@ -4,30 +4,67 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.FlippingUtil;
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.telemetry.MatchTime;
 
+@Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
 
+  @Logged(name = "MatchTime")
+  private final MatchTime matchTime = new MatchTime(2026);
+
   public Robot() {
     m_robotContainer = new RobotContainer();
-    
+    Epilogue.bind(this);
   }
+
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_BATTERY_VOLTAGE, RobotController.getBatteryVoltage());
+    matchTime.update(MatchTime.kGameData2026.get());
   }
 
   @Override
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // Publish auto starting pose if the selected auto is a PathPlanner auto
+    if (m_autonomousCommand instanceof PathPlannerAuto) {
+      Pose2d startPose = ((PathPlannerAuto) m_autonomousCommand).getStartingPose();
+      // PathPlanner autos are authored for blue; flip for red alliance
+      if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+        startPose = FlippingUtil.flipFieldPose(startPose);
+      }
+      SmartDashboard.putString(Constants.SmartDashboardConstants.KEY_AUTO_STARTING_POSE,
+          String.format("(%.2f, %.2f) %.1f°",
+              startPose.getX(), startPose.getY(),
+              startPose.getRotation().getDegrees()));
+      SmartDashboard.putNumberArray(Constants.SmartDashboardConstants.KEY_AUTO_STARTING_POSE_ARRAY,
+          new double[] { startPose.getX(), startPose.getY(), startPose.getRotation().getDegrees() });
+    } else {
+      SmartDashboard.putString(Constants.SmartDashboardConstants.KEY_AUTO_STARTING_POSE, "N/A (not a PathPlanner auto)");
+    }
+  }
 
   @Override
   public void disabledExit() {}

@@ -24,12 +24,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PathfindToShoot"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -49,19 +43,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PathfindToCenter2nd"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2ndCentertoShootLeft"
+                  "pathName": "2ndCenter(Depot)"
                 }
               },
               {

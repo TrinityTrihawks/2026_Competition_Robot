@@ -1,5 +1,7 @@
 package frc.robot.navigation;
 
+import java.lang.invoke.ConstantCallSite;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -8,20 +10,20 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
 
 public class NavUtil {
-    private static final double ShootingDist = 2.95; //meters
-    private static Translation2d TargetHub;
+    private static final double ShootingDist = 2; //meters
+    private static Translation2d TargetHub = Constants.BLUE_HUB;
 
     private NavUtil() {}
 
 
 
     public static Pose2d FindShootTarget(Translation2d RobotXY) {
-        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+        if ( DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
             TargetHub = Constants.BLUE_HUB;
         }
-        else{TargetHub = Constants.RED_HUB;
+        else {
+            TargetHub = Constants.RED_HUB;
         }
-
         Translation2d OutputTranslation = TargetHub.minus(RobotXY);
         double X = OutputTranslation.getX();
         double Y = OutputTranslation.getY();
@@ -38,14 +40,10 @@ public class NavUtil {
         return TargPose;
     } 
     public static Pose2d HumanStationPose() {
-        Pose2d HumanStation;
         if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
-            HumanStation = Constants.BLUE_HUMAN;
-        }
-        else {
-            HumanStation = Constants.RED_HUMAN;
-        }
-        return HumanStation;
+        return Constants.BLUE_HUMAN;
+    }
+    return Constants.RED_HUMAN;
     }
     
 }
