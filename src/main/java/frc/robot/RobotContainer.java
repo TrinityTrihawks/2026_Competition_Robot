@@ -44,12 +44,12 @@ import static edu.wpi.first.units.Units.*;
 
 public class RobotContainer {
     private final KitbotSubsystem m_KitbotSubsystem = new KitbotSubsystem(
-            () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.625),
+            () -> SmartDashboard.getNumber("Speed%: Index Motor", 0.55),
             () -> SmartDashboard.getNumber("Speed%: Intake Motor", 0.666),
             () -> SmartDashboard.getNumber("Speed%: Shooting Motor", 0.87));
 
-    private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.4);
-    private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.45);
+    private DoubleSupplier speedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Speed Percentage 0-1", 0.45);
+    private DoubleSupplier angularSpeedSupplier = () -> SmartDashboard.getNumber("Swerve Drive Train Angular Rate 0-1", 0.4);
 
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -79,6 +79,8 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
+    private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
+
     private final SendableChooser<Boolean> Left_or_RightChooser = new SendableChooser<>();
 
     private final SendableChooser<Command> autoChooser;
@@ -90,7 +92,7 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
     public RobotContainer() {
         NamedCommands.registerCommand("IntaketoShoot", new IntakeToShoot(m_KitbotSubsystem));
-        NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
+        NamedCommands.registerCommand("HoppertoShoot", new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.7)));
         NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
         NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
@@ -109,12 +111,12 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         initializeGyroPose();
 
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
-        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.4);
-        SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.45);
-        SmartDashboard.putNumber("Speed%: Index Motor", 0.625);
+        SmartDashboard.putNumber("Swerve Drive Train Speed Percentage 0-1", 0.45);
+        SmartDashboard.putNumber("Swerve Drive Train Angular Rate 0-1", 0.40);
+        SmartDashboard.putNumber("Speed%: Index Motor", 0.55);
         SmartDashboard.putNumber("Speed%: Intake Motor", 0.666);
         SmartDashboard.putNumber("Speed%: Shooting Motor", 0.87);
-        SmartDashboard.putNumber("Indexer Delay: Seconds", 0.4);
+        SmartDashboard.putNumber("Indexer Delay: Seconds", 0.7);
 
         configureBindings();
         }
@@ -176,7 +178,7 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         drivetrain.registerTelemetry(logger::telemeterize);
 
         subsController.leftTrigger().whileTrue(new IntakeToShoot(m_KitbotSubsystem));
-        subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem,() -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)));
+        subsController.rightTrigger().whileTrue(new HopperToShoot(m_KitbotSubsystem,() -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.7)));
         subsController.povDown().whileTrue(new InverseEverything(m_KitbotSubsystem));
         subsController.x().whileTrue(new IntakeToHopper(m_KitbotSubsystem));
     }
@@ -208,7 +210,7 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
         Set.of(drivetrain)),
-        new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.4)).withTimeout(8)), 
+        new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber("Indexer Delay: Seconds", 0.7)).withTimeout(8)), 
 
         Set.of(drivetrain));
 }
