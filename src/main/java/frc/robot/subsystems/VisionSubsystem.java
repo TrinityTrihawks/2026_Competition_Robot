@@ -45,6 +45,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         Limelight_On_Off.setDefaultOption("On", true);
         Limelight_On_Off.addOption("Off", false);
+        SmartDashboard.putData(Constants.SmartDashboardConstants.KEY_LIMELIGHT_CHOOSER, Limelight_On_Off);
     }
 
     @Override

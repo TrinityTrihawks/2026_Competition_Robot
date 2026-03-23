@@ -79,8 +79,6 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
-    private final SendableChooser<Boolean> Left_or_RightChooser = new SendableChooser<>();
-
     private final SendableChooser<Command> autoChooser;
 
     // Add these three fields near your other drivetrain fields (e.g. below the `logger` line)
@@ -95,16 +93,10 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
         NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () -> 
         AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
         Set.of(drivetrain)));
-        NamedCommands.registerCommand("PathfindToCenter2nd", PathfindToCenter2nd());
-
 
         autoChooser = AutoBuilder.buildAutoChooser("");
         autoChooser.addOption("PathfindingHumanStationtoShoot", AutoBuilderHumanStation());
         SmartDashboard.putData("Auto Mode", autoChooser);
-
-        Left_or_RightChooser.setDefaultOption("Left", true);
-        Left_or_RightChooser.addOption("Right", false);
-        SmartDashboard.putData("Left or Right Auto Chooser", Left_or_RightChooser);
 
         initializeGyroPose();
 
@@ -184,21 +176,6 @@ private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
     public Command getAutonomousCommand() {
         // return AutoBuilder.pathfindToPose(new Pose2d(2 , 4, new Rotation2d(Degrees.zero())), DynamicPathDemo.DEFAULT_CONSTRAINTS);
         return autoChooser.getSelected();
-    }
-
-    public Command PathfindToCenter2nd() {
-        return Commands.defer(() -> {
-                Pose2d centerpose;
-        
-                if (Left_or_RightChooser.getSelected() == true) {
-                        centerpose = Constants.BLUE_LEFT_CENTER;
-                }
-                else {
-                        centerpose = Constants.BLUE_RIGHT_CENTER;
-                }
-
-        return AutoBuilder.pathfindToPose(centerpose,DynamicPathDemo.DEFAULT_CONSTRAINTS);},
-        Set.of(drivetrain));
     }
 
     public Command AutoBuilderHumanStation() {

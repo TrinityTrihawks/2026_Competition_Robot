@@ -38,6 +38,8 @@ public class Constants {
         public static final String KEY_INDEXER_DELAY = "Indexer Delay: Seconds";
         public static final double DEFAULT_INDEXER_DELAY = 0.7;
 
+        public static final String KEY_LIMELIGHT_CHOOSER = "Limelight On/Off";
+
         // Telemetry keys
         public static final String KEY_BATTERY_VOLTAGE = "Battery Voltage";
         public static final String KEY_AUTO_STARTING_POSE = "Auto/StartingPose";
