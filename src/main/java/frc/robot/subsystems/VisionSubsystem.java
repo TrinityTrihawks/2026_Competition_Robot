@@ -9,6 +9,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -30,6 +31,7 @@ public class VisionSubsystem extends SubsystemBase {
     private StructPublisher<Pose2d> llPosePub;
     private double m_lastHeartbeat = 0;
     private int m_heartbeatStaleCount = 0;
+    private final SendableChooser<Boolean> Limelight_On_Off = new SendableChooser<>();
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain) {
         this(drivetrain, VisionConstants.LIMELIGHT_NAME);
@@ -40,6 +42,9 @@ public class VisionSubsystem extends SubsystemBase {
         .getStructTopic(limelightName + "-pose", Pose2d.struct).publish();
         m_drivetrain = drivetrain;
         m_limelightName = limelightName;
+
+        Limelight_On_Off.setDefaultOption("On", true);
+        Limelight_On_Off.addOption("Off", false);
     }
 
     @Override
@@ -92,7 +97,9 @@ public class VisionSubsystem extends SubsystemBase {
 
         Matrix<N3, N1> stdDevs = calculateStdDevs(estimate);
 
+        if (Limelight_On_Off.getSelected() == true) {
         m_drivetrain.addVisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
+        }
 
         m_latestMeasurement = new VisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
     }
