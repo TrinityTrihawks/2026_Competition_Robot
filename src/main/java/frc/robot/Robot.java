@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
+    SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_BATTERY_VOLTAGE, RobotController.getBatteryVoltage());
     matchTime.update(MatchTime.kGameData2026.get());
   }
 
@@ -55,14 +55,14 @@ public class Robot extends TimedRobot {
       if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
         startPose = FlippingUtil.flipFieldPose(startPose);
       }
-      SmartDashboard.putString("Auto/StartingPose",
+      SmartDashboard.putString(Constants.SmartDashboardConstants.KEY_AUTO_STARTING_POSE,
           String.format("(%.2f, %.2f) %.1f°",
               startPose.getX(), startPose.getY(),
               startPose.getRotation().getDegrees()));
-      SmartDashboard.putNumberArray("Auto/StartingPoseArray",
+      SmartDashboard.putNumberArray(Constants.SmartDashboardConstants.KEY_AUTO_STARTING_POSE_ARRAY,
           new double[] { startPose.getX(), startPose.getY(), startPose.getRotation().getDegrees() });
     } else {
-      SmartDashboard.putString("Auto/StartingPose", "N/A (not a PathPlanner auto)");
+      SmartDashboard.putString(Constants.SmartDashboardConstants.KEY_AUTO_STARTING_POSE, "N/A (not a PathPlanner auto)");
     }
   }
 

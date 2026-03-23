@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
@@ -67,12 +68,12 @@ public class VisionSubsystem extends SubsystemBase {
             m_heartbeatStaleCount++;
         }
         // If heartbeat hasn't changed in ~500ms (25 cycles at 50Hz), consider disconnected
-        SmartDashboard.putBoolean("Vision/LimelightConnected", m_heartbeatStaleCount < 25);
+        SmartDashboard.putBoolean(Constants.SmartDashboardConstants.KEY_VISION_LIMELIGHT_CONNECTED, m_heartbeatStaleCount < 25);
 
-        SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
-        SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);
-        SmartDashboard.putNumber("Angle Error for Limelight", getTagTx());
-        SmartDashboard.putNumber("tags", getTagCount());
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_VISION_TAG_COUNT, estimate.tagCount);
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_VISION_AVG_TAG_DIST, estimate.avgTagDist);
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_ANGLE_ERROR_LIMELIGHT, getTagTx());
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_TAGS, getTagCount());
 
         if (estimate == null || estimate.tagCount == 0) {
             return;

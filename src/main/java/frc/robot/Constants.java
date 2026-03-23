@@ -18,6 +18,37 @@ public class Constants {
     
 
     public static final Pose2d START_POSE = new Pose2d(3.5, 4, Rotation2d.fromDegrees(0));
+    public static final class SmartDashboardConstants {
+        // Tunable keys and defaults
+        public static final String KEY_INDEX_MOTOR_SPEED = "Speed% Index Motor";
+        public static final double DEFAULT_INDEX_MOTOR_SPEED = 0.55;
+
+        public static final String KEY_INTAKE_MOTOR_SPEED = "Speed% Intake Motor";
+        public static final double DEFAULT_INTAKE_MOTOR_SPEED = 0.666;
+
+        public static final String KEY_SHOOTING_MOTOR_SPEED = "Speed% Shooting Motor";
+        public static final double DEFAULT_SHOOTING_MOTOR_SPEED = 0.87;
+
+        public static final String KEY_SWERVE_SPEED = "Swerve Drive Train Speed Percentage 0-1";
+        public static final double DEFAULT_SWERVE_SPEED = 0.45;
+
+        public static final String KEY_SWERVE_ANGULAR_RATE = "Swerve Drive Train Angular Rate 0-1";
+        public static final double DEFAULT_SWERVE_ANGULAR_RATE = 0.4;
+
+        public static final String KEY_INDEXER_DELAY = "Indexer Delay: Seconds";
+        public static final double DEFAULT_INDEXER_DELAY = 0.7;
+
+        // Telemetry keys
+        public static final String KEY_BATTERY_VOLTAGE = "Battery Voltage";
+        public static final String KEY_AUTO_STARTING_POSE = "Auto/StartingPose";
+        public static final String KEY_AUTO_STARTING_POSE_ARRAY = "Auto/StartingPoseArray";
+        public static final String KEY_VISION_LIMELIGHT_CONNECTED = "Vision/LimelightConnected";
+        public static final String KEY_VISION_TAG_COUNT = "Vision/TagCount";
+        public static final String KEY_VISION_AVG_TAG_DIST = "Vision/AvgTagDist";
+        public static final String KEY_ANGLE_ERROR_LIMELIGHT = "Angle Error for Limelight";
+        public static final String KEY_TAGS = "tags";
+    }
+
     public static final class VisionConstants {
         public static final String LIMELIGHT_NAME = "limelight"; // navigate to Limeight Web Page to change which will be <limeight name>.local:5801
                                                                 
