@@ -1,0 +1,431 @@
+{
+  "version": 1,
+  "dashboardId": "auto",
+  "dashboards": {
+    "auto": {
+      "id": "auto",
+      "viewport": {
+        "scale": 0.5532486765461374,
+        "x": 225.72546003082408,
+        "y": 278.8373329792533
+      },
+      "widgets": [
+        {
+          "id": "642013ef-3aa8-48f6-9501-b7fbb0d32183",
+          "type": "field2d",
+          "layout": {
+            "height": 23,
+            "left": -12,
+            "top": -1,
+            "width": 40
+          },
+          "constraints": {
+            "height": {
+              "min": 11
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:/DriveState/Pose",
+          "lookback": 5,
+          "props": {
+            "style": "default",
+            "orientation": "0",
+            "bumperSizeInch": 32
+          }
+        },
+        {
+          "id": "d182fa30-16fb-42af-b29b-b789e2bd08b8",
+          "type": "chooser",
+          "layout": {
+            "height": 4,
+            "left": -1,
+            "top": -11,
+            "width": 19
+          },
+          "constraints": {
+            "height": {
+              "min": 4
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:/SmartDashboard/Auto Mode/*",
+          "props": {
+            "title": "Auto Mode",
+            "interactive": true
+          }
+        },
+        {
+          "id": "b8bc5788-2e28-4b09-8774-983be80808a8",
+          "type": "field2d",
+          "layout": {
+            "height": 20,
+            "left": -12,
+            "top": 44,
+            "width": 40
+          },
+          "constraints": {
+            "height": {
+              "min": 11
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:limelight-pose",
+          "lookback": 5,
+          "props": {
+            "style": "default",
+            "orientation": "0",
+            "bumperSizeInch": 32
+          }
+        },
+        {
+          "id": "08e63b26-ed7a-4f02-a2ee-7cfd43bcaf98",
+          "type": "field2d",
+          "layout": {
+            "height": 20,
+            "left": -12,
+            "top": 23,
+            "width": 40
+          },
+          "constraints": {
+            "height": {
+              "min": 11
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:/SmartDashboard/Auto/StartingPoseArray",
+          "lookback": 5,
+          "props": {
+            "style": "default",
+            "orientation": "0",
+            "bumperSizeInch": 32
+          }
+        },
+        {
+          "id": "bab6ab10-6cc8-4095-8e28-d5afc34bf967",
+          "type": "checklist",
+          "layout": {
+            "height": 9,
+            "left": -12,
+            "top": -11,
+            "width": 10
+          },
+          "constraints": {
+            "height": {
+              "min": 3
+            },
+            "width": {
+              "min": 5
+            }
+          },
+          "slots": {
+            "0512c7a1-948a-47ee-b03c-45c4f0d53ab1": "nt:/SmartDashboard/Vision/LimelightConnected"
+          },
+          "props": {
+            "title": "System Status",
+            "channels": [
+              {
+                "label": "Limelight",
+                "slot": "0512c7a1-948a-47ee-b03c-45c4f0d53ab1"
+              }
+            ]
+          }
+        },
+        {
+          "id": "1ddde337-ea0c-4871-9d8a-25e26d352025",
+          "type": "gyro",
+          "layout": {
+            "height": 9,
+            "left": 20,
+            "top": -11,
+            "width": 8
+          },
+          "constraints": {
+            "height": {
+              "min": 6
+            },
+            "width": {
+              "min": 5
+            }
+          },
+          "slot": "nt:/DriveState/Pose",
+          "props": {
+            "variant": "yaw",
+            "yawClockwise": false,
+            "yawSymmetric": false
+          }
+        },
+        {
+          "id": "7bcbe328-4e92-4e15-9f01-40db39fc8c96",
+          "type": "gauge.linear",
+          "layout": {
+            "height": 4,
+            "left": -1,
+            "top": -6,
+            "width": 19
+          },
+          "constraints": {
+            "height": {
+              "min": 4
+            },
+            "width": {
+              "min": 4
+            }
+          },
+          "slot": "nt:/SmartDashboard/Battery Voltage",
+          "props": {
+            "title": "Battery Voltage",
+            "vertical": false,
+            "multiple": false,
+            "channels": [],
+            "labelVisible": false,
+            "valueVisible": true,
+            "axisVisible": true,
+            "valueFormat": {
+              "maximumFractionDigits": 1
+            },
+            "mono": true,
+            "min": 3,
+            "max": 14,
+            "thresholdLo": 13
+          }
+        }
+      ]
+    },
+    "teleop": {
+      "id": "teleop",
+      "viewport": {
+        "scale": 0.5027802901992342,
+        "x": 24.13345392956324,
+        "y": 144.80072357737944
+      },
+      "widgets": [
+        {
+          "id": "59a8d352-f680-4bcd-966a-bc906a808520",
+          "type": "fms",
+          "layout": {
+            "left": 32,
+            "top": 0,
+            "width": 15,
+            "height": 10
+          },
+          "constraints": {
+            "height": {
+              "min": 7
+            },
+            "width": {
+              "min": 9
+            }
+          },
+          "slot": "nt:/FMSInfo/*",
+          "props": {}
+        },
+        {
+          "id": "67ec9bca-4236-4d27-bfa6-106f6af719f2",
+          "type": "slider",
+          "layout": {
+            "left": 1,
+            "top": 17,
+            "width": 14,
+            "height": 5
+          },
+          "constraints": {
+            "height": {
+              "min": 4
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:/SmartDashboard/Swerve Drive Train Speed Percentage 0-1",
+          "props": {
+            "title": "Swerve Drive Train Speed %",
+            "interactive": true,
+            "vertical": false,
+            "valueFormat": {
+              "maximumFractionDigits": 2
+            },
+            "min": 0,
+            "max": 1,
+            "step": 0.01
+          }
+        },
+        {
+          "id": "ffd42b36-edfe-4eec-b6c8-b182c15fe754",
+          "type": "slider",
+          "layout": {
+            "left": 1,
+            "top": 11,
+            "width": 14,
+            "height": 5
+          },
+          "constraints": {
+            "height": {
+              "min": 4
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:/SmartDashboard/Swerve Drive Train Angular Rate 0-1",
+          "props": {
+            "title": "Swerve Angulare Rate",
+            "interactive": true,
+            "vertical": false,
+            "valueFormat": {
+              "maximumFractionDigits": 2
+            },
+            "min": 0,
+            "max": 1,
+            "step": 0.01
+          }
+        },
+        {
+          "id": "2f0efd47-099c-49b4-bd49-750641eb278d",
+          "type": "field2d",
+          "layout": {
+            "height": 20,
+            "left": 1,
+            "top": 23,
+            "width": 46
+          },
+          "constraints": {
+            "height": {
+              "min": 11
+            },
+            "width": {
+              "min": 6
+            }
+          },
+          "slot": "nt:/DriveState/Pose",
+          "lookback": 5,
+          "props": {
+            "style": "default",
+            "orientation": "0",
+            "bumperSizeInch": 32
+          }
+        },
+        {
+          "id": "7b7240ab-93af-4398-b6bc-839cc274b649",
+          "type": "match.time",
+          "layout": {
+            "left": 1,
+            "top": 0,
+            "width": 14,
+            "height": 10
+          },
+          "constraints": {
+            "height": {
+              "min": 6
+            },
+            "width": {
+              "min": 9
+            }
+          },
+          "slot": "nt:Robot/MatchTime",
+          "props": {
+            "gameDataVisible": true,
+            "attention": 5,
+            "cautionAt": 30,
+            "dangerAt": 10
+          }
+        },
+        {
+          "id": "f0663432-a416-4c95-9a88-b209a01a03c8",
+          "type": "slider",
+          "layout": {
+            "left": 32,
+            "top": 11,
+            "width": 15,
+            "height": 5
+          },
+          "constraints": {
+            "width": {
+              "min": 6
+            },
+            "height": {
+              "min": 4
+            }
+          },
+          "slot": "nt:/SmartDashboard/Speed% Index Motor",
+          "props": {
+            "interactive": true,
+            "vertical": false,
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "valueFormat": {
+              "maximumFractionDigits": 2
+            }
+          }
+        },
+        {
+          "id": "3ee2dfef-a2a2-4ee3-a7ec-9eea04b2e4f3",
+          "type": "slider",
+          "layout": {
+            "left": 32,
+            "top": 17,
+            "width": 15,
+            "height": 5
+          },
+          "constraints": {
+            "width": {
+              "min": 6
+            },
+            "height": {
+              "min": 4
+            }
+          },
+          "slot": "nt:/SmartDashboard/Speed% Intake Motor",
+          "props": {
+            "interactive": false,
+            "vertical": false,
+            "min": -1,
+            "max": 1,
+            "step": 0.1,
+            "valueFormat": {
+              "maximumFractionDigits": 2
+            }
+          }
+        },
+        {
+          "id": "b356f154-c160-4387-83f2-72550e2d960c",
+          "type": "slider",
+          "layout": {
+            "left": 16,
+            "top": 17,
+            "width": 15,
+            "height": 5
+          },
+          "constraints": {
+            "width": {
+              "min": 6
+            },
+            "height": {
+              "min": 4
+            }
+          },
+          "slot": "nt:/SmartDashboard/Speed% Shooting Motor",
+          "props": {
+            "interactive": false,
+            "vertical": false,
+            "min": -1,
+            "max": 1,
+            "step": 0.1,
+            "valueFormat": {
+              "maximumFractionDigits": 2
+            }
+          }
+        }
+      ]
+    },
+    "custom": []
+  }
+}
