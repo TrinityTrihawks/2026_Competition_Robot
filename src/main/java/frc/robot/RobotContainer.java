@@ -79,8 +79,6 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
-    private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
-
     private final SendableChooser<Boolean> Left_or_RightChooser = new SendableChooser<>();
 
     private final SendableChooser<Command> autoChooser;
