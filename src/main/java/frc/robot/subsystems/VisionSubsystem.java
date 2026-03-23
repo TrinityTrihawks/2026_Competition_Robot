@@ -27,6 +27,8 @@ public class VisionSubsystem extends SubsystemBase {
     private final String m_limelightName;
     private VisionMeasurement m_latestMeasurement = null;
     private StructPublisher<Pose2d> llPosePub;
+    private double m_lastHeartbeat = 0;
+    private int m_heartbeatStaleCount = 0;
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain) {
         this(drivetrain, VisionConstants.LIMELIGHT_NAME);
@@ -55,6 +57,17 @@ public class VisionSubsystem extends SubsystemBase {
             LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(m_limelightName);
 
             llPosePub.set(estimate.pose); // publish the pose to network tables
+
+        // Limelight connection status via heartbeat
+        double heartbeat = LimelightHelpers.getHeartbeat(m_limelightName);
+        if (heartbeat != m_lastHeartbeat) {
+            m_lastHeartbeat = heartbeat;
+            m_heartbeatStaleCount = 0;
+        } else {
+            m_heartbeatStaleCount++;
+        }
+        // If heartbeat hasn't changed in ~500ms (25 cycles at 50Hz), consider disconnected
+        SmartDashboard.putBoolean("Vision/LimelightConnected", m_heartbeatStaleCount < 25);
 
         SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
         SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);

@@ -38,6 +38,7 @@ import frc.robot.navigation.DynamicPathDemo;
 import frc.robot.navigation.NavUtil;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.KitbotSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -76,6 +77,7 @@ public class RobotContainer {
     private final CommandXboxController subsController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final VisionSubsystem m_vision = new VisionSubsystem(drivetrain);
 
     private final SendableChooser<Boolean> Left_or_RightChooser = new SendableChooser<>();
 

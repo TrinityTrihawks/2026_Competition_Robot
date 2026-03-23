@@ -4,8 +4,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.FlippingUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -20,7 +27,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
   }
 
   @Override
@@ -29,6 +37,23 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // Publish auto starting pose if the selected auto is a PathPlanner auto
+    if (m_autonomousCommand instanceof PathPlannerAuto) {
+      Pose2d startPose = ((PathPlannerAuto) m_autonomousCommand).getStartingPose();
+      // PathPlanner autos are authored for blue; flip for red alliance
+      if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {
+        startPose = FlippingUtil.flipFieldPose(startPose);
+      }
+      SmartDashboard.putString("Auto/StartingPose",
+          String.format("(%.2f, %.2f) %.1f°",
+              startPose.getX(), startPose.getY(),
+              startPose.getRotation().getDegrees()));
+      SmartDashboard.putNumberArray("Auto/StartingPoseArray",
+          new double[] { startPose.getX(), startPose.getY(), startPose.getRotation().getDegrees() });
+    } else {
+      SmartDashboard.putString("Auto/StartingPose", "N/A (not a PathPlanner auto)");
+    }
   }
 
   @Override
