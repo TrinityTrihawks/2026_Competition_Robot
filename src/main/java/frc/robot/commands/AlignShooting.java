@@ -13,15 +13,15 @@ import frc.robot.navigation.NavUtil;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
-public class AlignShooting extends SequentialCommandGroup{
+public class AlignShooting extends SequentialCommandGroup {
 
     public AlignShooting(CommandSwerveDrivetrain drivetrain) {
         addCommands(
-            Commands.defer( () -> 
-        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation(),() -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST, Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST)),DynamicPathDemo.DEFAULT_CONSTRAINTS),
-        Set.of(drivetrain)),
-        new AlignToHub(drivetrain));
+                Commands.defer(() ->
+                                AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation(), () -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST, Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST)), DynamicPathDemo.DEFAULT_CONSTRAINTS),
+                        Set.of(drivetrain)),
+                new AlignToHub(drivetrain));
     }
 
-    
+
 }

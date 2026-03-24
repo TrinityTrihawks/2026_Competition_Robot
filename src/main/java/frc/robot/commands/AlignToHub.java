@@ -11,7 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 public class AlignToHub extends Command {
     private final CommandSwerveDrivetrain drivetrain;
-    private final PIDController rotController = new PIDController(0.08, 0.0, 0.002);
+    private final PIDController rotController = new PIDController(10, 0.0, 0.002);
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
