@@ -5,26 +5,26 @@
     "auto": {
       "id": "auto",
       "viewport": {
-        "scale": 0.5532486765461374,
-        "x": 225.72546003082408,
-        "y": 278.8373329792533
+        "x": 237.1818827431916,
+        "y": 197.65156895265966,
+        "scale": 0.5490321359796102
       },
       "widgets": [
         {
           "id": "642013ef-3aa8-48f6-9501-b7fbb0d32183",
           "type": "field2d",
           "layout": {
-            "height": 23,
-            "left": -12,
-            "top": -1,
-            "width": 40
+            "left": 29,
+            "top": -11,
+            "width": 32,
+            "height": 16
           },
           "constraints": {
-            "height": {
-              "min": 11
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 11
             }
           },
           "slot": "nt:/DriveState/Pose",
@@ -39,17 +39,17 @@
           "id": "d182fa30-16fb-42af-b29b-b789e2bd08b8",
           "type": "chooser",
           "layout": {
-            "height": 4,
             "left": -1,
             "top": -11,
-            "width": 19
+            "width": 19,
+            "height": 4
           },
           "constraints": {
-            "height": {
-              "min": 4
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 4
             }
           },
           "slot": "nt:/SmartDashboard/Auto Mode/*",
@@ -62,17 +62,17 @@
           "id": "b8bc5788-2e28-4b09-8774-983be80808a8",
           "type": "field2d",
           "layout": {
-            "height": 20,
-            "left": -12,
-            "top": 44,
-            "width": 40
+            "left": 29,
+            "top": 23,
+            "width": 32,
+            "height": 16
           },
           "constraints": {
-            "height": {
-              "min": 11
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 11
             }
           },
           "slot": "nt:limelight-pose",
@@ -87,17 +87,17 @@
           "id": "08e63b26-ed7a-4f02-a2ee-7cfd43bcaf98",
           "type": "field2d",
           "layout": {
-            "height": 20,
-            "left": -12,
-            "top": 23,
-            "width": 40
+            "left": 29,
+            "top": 6,
+            "width": 32,
+            "height": 16
           },
           "constraints": {
-            "height": {
-              "min": 11
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 11
             }
           },
           "slot": "nt:/SmartDashboard/Auto/StartingPoseArray",
@@ -112,17 +112,17 @@
           "id": "bab6ab10-6cc8-4095-8e28-d5afc34bf967",
           "type": "checklist",
           "layout": {
-            "height": 9,
             "left": -12,
             "top": -11,
-            "width": 10
+            "width": 10,
+            "height": 9
           },
           "constraints": {
-            "height": {
-              "min": 3
-            },
             "width": {
               "min": 5
+            },
+            "height": {
+              "min": 3
             }
           },
           "slots": {
@@ -142,17 +142,17 @@
           "id": "1ddde337-ea0c-4871-9d8a-25e26d352025",
           "type": "gyro",
           "layout": {
-            "height": 9,
             "left": 20,
             "top": -11,
-            "width": 8
+            "width": 8,
+            "height": 9
           },
           "constraints": {
-            "height": {
-              "min": 6
-            },
             "width": {
               "min": 5
+            },
+            "height": {
+              "min": 6
             }
           },
           "slot": "nt:/DriveState/Pose",
@@ -166,16 +166,16 @@
           "id": "7bcbe328-4e92-4e15-9f01-40db39fc8c96",
           "type": "gauge.linear",
           "layout": {
-            "height": 4,
             "left": -1,
             "top": -6,
-            "width": 19
+            "width": 19,
+            "height": 4
           },
           "constraints": {
-            "height": {
+            "width": {
               "min": 4
             },
-            "width": {
+            "height": {
               "min": 4
             }
           },
@@ -191,10 +191,55 @@
             "valueFormat": {
               "maximumFractionDigits": 1
             },
-            "mono": true,
             "min": 3,
             "max": 14,
             "thresholdLo": 13
+          }
+        },
+        {
+          "id": "8ef3aac9-8baa-499f-9570-a385d4590e07",
+          "type": "camera",
+          "layout": {
+            "left": -12,
+            "top": -1,
+            "width": -6,
+            "height": 3
+          },
+          "constraints": {
+            "width": {
+              "min": 12
+            },
+            "height": {
+              "min": 9
+            }
+          },
+          "lookback": 5,
+          "props": {
+            "address": "limelight.local",
+            "port": 5800
+          }
+        },
+        {
+          "id": "807a501c-38a8-43c4-9953-84f01f8c4a56",
+          "type": "chooser",
+          "layout": {
+            "left": 18,
+            "top": -1,
+            "width": 10,
+            "height": 5
+          },
+          "constraints": {
+            "width": {
+              "min": 6
+            },
+            "height": {
+              "min": 4
+            }
+          },
+          "slot": "nt:/SmartDashboard/Limelight On/Off/*",
+          "props": {
+            "interactive": true,
+            "title": "Limelight Pose Updates"
           }
         }
       ]
@@ -202,26 +247,26 @@
     "teleop": {
       "id": "teleop",
       "viewport": {
-        "scale": 0.5027802901992342,
-        "x": 24.13345392956324,
-        "y": 144.80072357737944
+        "x": 0,
+        "y": 17.338714092362665,
+        "scale": 0.722446420515111
       },
       "widgets": [
         {
           "id": "59a8d352-f680-4bcd-966a-bc906a808520",
           "type": "fms",
           "layout": {
-            "left": 32,
-            "top": 0,
-            "width": 15,
-            "height": 10
+            "left": 1,
+            "top": 23,
+            "width": 14,
+            "height": 8
           },
           "constraints": {
-            "height": {
-              "min": 7
-            },
             "width": {
               "min": 9
+            },
+            "height": {
+              "min": 7
             }
           },
           "slot": "nt:/FMSInfo/*",
@@ -231,17 +276,17 @@
           "id": "67ec9bca-4236-4d27-bfa6-106f6af719f2",
           "type": "slider",
           "layout": {
-            "left": 1,
-            "top": 17,
+            "left": 31,
+            "top": 27,
             "width": 14,
             "height": 5
           },
           "constraints": {
-            "height": {
-              "min": 4
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 4
             }
           },
           "slot": "nt:/SmartDashboard/Swerve Drive Train Speed Percentage 0-1",
@@ -261,17 +306,17 @@
           "id": "ffd42b36-edfe-4eec-b6c8-b182c15fe754",
           "type": "slider",
           "layout": {
-            "left": 1,
-            "top": 11,
+            "left": 46,
+            "top": 27,
             "width": 14,
             "height": 5
           },
           "constraints": {
-            "height": {
-              "min": 4
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 4
             }
           },
           "slot": "nt:/SmartDashboard/Swerve Drive Train Angular Rate 0-1",
@@ -291,17 +336,17 @@
           "id": "2f0efd47-099c-49b4-bd49-750641eb278d",
           "type": "field2d",
           "layout": {
-            "height": 20,
-            "left": 1,
-            "top": 23,
-            "width": 46
+            "left": 31,
+            "top": 0,
+            "width": 46,
+            "height": 20
           },
           "constraints": {
-            "height": {
-              "min": 11
-            },
             "width": {
               "min": 6
+            },
+            "height": {
+              "min": 11
             }
           },
           "slot": "nt:/DriveState/Pose",
@@ -322,11 +367,11 @@
             "height": 10
           },
           "constraints": {
-            "height": {
-              "min": 6
-            },
             "width": {
               "min": 9
+            },
+            "height": {
+              "min": 6
             }
           },
           "slot": "nt:Robot/MatchTime",
@@ -341,9 +386,9 @@
           "id": "f0663432-a416-4c95-9a88-b209a01a03c8",
           "type": "slider",
           "layout": {
-            "left": 32,
-            "top": 11,
-            "width": 15,
+            "left": 46,
+            "top": 21,
+            "width": 14,
             "height": 5
           },
           "constraints": {
@@ -358,21 +403,21 @@
           "props": {
             "interactive": true,
             "vertical": false,
-            "min": 0,
-            "max": 1,
-            "step": 0.01,
             "valueFormat": {
               "maximumFractionDigits": 2
-            }
+            },
+            "min": 0,
+            "max": 1,
+            "step": 0.01
           }
         },
         {
           "id": "3ee2dfef-a2a2-4ee3-a7ec-9eea04b2e4f3",
           "type": "slider",
           "layout": {
-            "left": 32,
-            "top": 17,
-            "width": 15,
+            "left": 61,
+            "top": 21,
+            "width": 14,
             "height": 5
           },
           "constraints": {
@@ -387,21 +432,21 @@
           "props": {
             "interactive": false,
             "vertical": false,
-            "min": -1,
-            "max": 1,
-            "step": 0.1,
             "valueFormat": {
               "maximumFractionDigits": 2
-            }
+            },
+            "min": -1,
+            "max": 1,
+            "step": 0.1
           }
         },
         {
           "id": "b356f154-c160-4387-83f2-72550e2d960c",
           "type": "slider",
           "layout": {
-            "left": 16,
-            "top": 17,
-            "width": 15,
+            "left": 31,
+            "top": 21,
+            "width": 14,
             "height": 5
           },
           "constraints": {
@@ -416,12 +461,35 @@
           "props": {
             "interactive": false,
             "vertical": false,
-            "min": -1,
-            "max": 1,
-            "step": 0.1,
             "valueFormat": {
               "maximumFractionDigits": 2
+            },
+            "min": -1,
+            "max": 1,
+            "step": 0.1
+          }
+        },
+        {
+          "id": "818b2192-60b2-4a8b-8fde-02e928a8aab3",
+          "type": "camera",
+          "layout": {
+            "left": 16,
+            "top": 0,
+            "width": 14,
+            "height": 10
+          },
+          "constraints": {
+            "width": {
+              "min": 12
+            },
+            "height": {
+              "min": 9
             }
+          },
+          "lookback": 5,
+          "props": {
+            "address": "limelight.local",
+            "port": 5800
           }
         }
       ]
