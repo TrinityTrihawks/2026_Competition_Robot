@@ -15,7 +15,7 @@ public class DynamicPathDemo {
     public static final Pose2d blueBridgeLeft = new Pose2d(3.5, .6, Rotation2d.fromDegrees(0));
     public static final Pose2d blueBridgeRight = new Pose2d(5.7, .6, Rotation2d.fromDegrees(0));
     public static final Pose2d blueFiringPosition = new Pose2d(6.4, 4.0, Rotation2d.fromDegrees(180));
-    public static final PathConstraints DEFAULT_CONSTRAINTS = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+    public static final PathConstraints DEFAULT_CONSTRAINTS = new PathConstraints(6.0, 6.0, 2 * Math.PI, 4 * Math.PI);
     public static PathPlannerPath makePath() {
         // Create a list of waypoints from poses. Each pose represents one waypoint.
         // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.

@@ -85,7 +85,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntaketoHopper", new IntakeToHopper(m_KitbotSubsystem));
         NamedCommands.registerCommand("Shake", new ShakeDrivetrain(drivetrain));
         NamedCommands.registerCommand("PathfindToShoot", Commands.defer( () ->
-        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation(), () -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST, Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST)),DynamicPathDemo.DEFAULT_CONSTRAINTS), 
         Set.of(drivetrain)));
 
         autoChooser = AutoBuilder.buildAutoChooser("");
@@ -101,6 +101,7 @@ public class RobotContainer {
         SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_INTAKE_MOTOR_SPEED, Constants.SmartDashboardConstants.DEFAULT_INTAKE_MOTOR_SPEED);
         SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_SHOOTING_MOTOR_SPEED, Constants.SmartDashboardConstants.DEFAULT_SHOOTING_MOTOR_SPEED);
         SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_INDEXER_DELAY, Constants.SmartDashboardConstants.DEFAULT_INDEXER_DELAY);
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST, Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST);
 
         configureBindings();
         }
@@ -155,9 +156,7 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(Commands.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.rightTrigger().whileTrue(Commands.defer( () -> 
-        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
-        Set.of(drivetrain)));
+        joystick.rightTrigger().whileTrue(new AlignShooting(drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -177,7 +176,7 @@ public class RobotContainer {
         AutoBuilder.pathfindToPose(NavUtil.HumanStationPose(), DynamicPathDemo.DEFAULT_CONSTRAINTS),
         new WaitCommand(5),
         Commands.defer( () -> 
-        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation()),DynamicPathDemo.DEFAULT_CONSTRAINTS),
+        AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation(), () -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST, Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST)),DynamicPathDemo.DEFAULT_CONSTRAINTS),
         Set.of(drivetrain)),
         new HopperToShoot(m_KitbotSubsystem, () -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_INDEXER_DELAY, Constants.SmartDashboardConstants.DEFAULT_INDEXER_DELAY)).withTimeout(8)),
 
