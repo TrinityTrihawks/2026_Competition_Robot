@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -23,6 +25,13 @@ public class AlignToHub extends Command {
     @Override
     public void execute() {
         Translation2d hub = Constants.BLUE_HUB;
+        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+            hub = Constants.BLUE_HUB;
+        }
+        else {
+            hub = Constants.RED_HUB;
+        }
+
         Translation2d robotPos = drivetrain.getState().Pose.getTranslation();
 
         double targetAngle = Math.atan2(
