@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "dashboardId": "auto",
+  "dashboardId": "f70024d5-0305-429c-b090-2b2dfe8514fb",
   "dashboards": {
     "auto": {
       "id": "auto",
       "viewport": {
-        "x": 237.1818827431916,
+        "x": 171.2980264256384,
         "y": 197.65156895265966,
         "scale": 0.5490321359796102
       },
@@ -33,29 +33,6 @@
             "style": "default",
             "orientation": "0",
             "bumperSizeInch": 32
-          }
-        },
-        {
-          "id": "d182fa30-16fb-42af-b29b-b789e2bd08b8",
-          "type": "chooser",
-          "layout": {
-            "left": -1,
-            "top": -11,
-            "width": 19,
-            "height": 4
-          },
-          "constraints": {
-            "width": {
-              "min": 6
-            },
-            "height": {
-              "min": 4
-            }
-          },
-          "slot": "nt:/SmartDashboard/Auto Mode/*",
-          "props": {
-            "title": "Auto Mode",
-            "interactive": true
           }
         },
         {
@@ -191,6 +168,7 @@
             "valueFormat": {
               "maximumFractionDigits": 1
             },
+            "mono": true,
             "min": 3,
             "max": 14,
             "thresholdLo": 13
@@ -220,6 +198,29 @@
           }
         },
         {
+          "id": "d182fa30-16fb-42af-b29b-b789e2bd08b8",
+          "type": "chooser",
+          "layout": {
+            "left": -1,
+            "top": -11,
+            "width": 19,
+            "height": 4
+          },
+          "constraints": {
+            "width": {
+              "min": 6
+            },
+            "height": {
+              "min": 4
+            }
+          },
+          "slot": "nt:/SmartDashboard/Auto Mode/*",
+          "props": {
+            "title": "Auto Mode",
+            "interactive": true
+          }
+        },
+        {
           "id": "807a501c-38a8-43c4-9953-84f01f8c4a56",
           "type": "chooser",
           "layout": {
@@ -238,8 +239,8 @@
           },
           "slot": "nt:/SmartDashboard/Limelight On/Off/*",
           "props": {
-            "interactive": true,
-            "title": "Limelight Pose Updates"
+            "title": "Limelight Pose Updates",
+            "interactive": true
           }
         }
       ]
@@ -248,8 +249,8 @@
       "id": "teleop",
       "viewport": {
         "x": 0,
-        "y": 17.338714092362665,
-        "scale": 0.722446420515111
+        "y": 24,
+        "scale": 0.5
       },
       "widgets": [
         {
@@ -271,66 +272,6 @@
           },
           "slot": "nt:/FMSInfo/*",
           "props": {}
-        },
-        {
-          "id": "67ec9bca-4236-4d27-bfa6-106f6af719f2",
-          "type": "slider",
-          "layout": {
-            "left": 31,
-            "top": 27,
-            "width": 14,
-            "height": 5
-          },
-          "constraints": {
-            "width": {
-              "min": 6
-            },
-            "height": {
-              "min": 4
-            }
-          },
-          "slot": "nt:/SmartDashboard/Swerve Drive Train Speed Percentage 0-1",
-          "props": {
-            "title": "Swerve Drive Train Speed %",
-            "interactive": true,
-            "vertical": false,
-            "valueFormat": {
-              "maximumFractionDigits": 2
-            },
-            "min": 0,
-            "max": 1,
-            "step": 0.01
-          }
-        },
-        {
-          "id": "ffd42b36-edfe-4eec-b6c8-b182c15fe754",
-          "type": "slider",
-          "layout": {
-            "left": 46,
-            "top": 27,
-            "width": 14,
-            "height": 5
-          },
-          "constraints": {
-            "width": {
-              "min": 6
-            },
-            "height": {
-              "min": 4
-            }
-          },
-          "slot": "nt:/SmartDashboard/Swerve Drive Train Angular Rate 0-1",
-          "props": {
-            "title": "Swerve Angulare Rate",
-            "interactive": true,
-            "vertical": false,
-            "valueFormat": {
-              "maximumFractionDigits": 2
-            },
-            "min": 0,
-            "max": 1,
-            "step": 0.01
-          }
         },
         {
           "id": "2f0efd47-099c-49b4-bd49-750641eb278d",
@@ -383,93 +324,6 @@
           }
         },
         {
-          "id": "f0663432-a416-4c95-9a88-b209a01a03c8",
-          "type": "slider",
-          "layout": {
-            "left": 46,
-            "top": 21,
-            "width": 14,
-            "height": 5
-          },
-          "constraints": {
-            "width": {
-              "min": 6
-            },
-            "height": {
-              "min": 4
-            }
-          },
-          "slot": "nt:/SmartDashboard/Speed% Index Motor",
-          "props": {
-            "interactive": true,
-            "vertical": false,
-            "valueFormat": {
-              "maximumFractionDigits": 2
-            },
-            "min": 0,
-            "max": 1,
-            "step": 0.01
-          }
-        },
-        {
-          "id": "3ee2dfef-a2a2-4ee3-a7ec-9eea04b2e4f3",
-          "type": "slider",
-          "layout": {
-            "left": 61,
-            "top": 21,
-            "width": 14,
-            "height": 5
-          },
-          "constraints": {
-            "width": {
-              "min": 6
-            },
-            "height": {
-              "min": 4
-            }
-          },
-          "slot": "nt:/SmartDashboard/Speed% Intake Motor",
-          "props": {
-            "interactive": false,
-            "vertical": false,
-            "valueFormat": {
-              "maximumFractionDigits": 2
-            },
-            "min": -1,
-            "max": 1,
-            "step": 0.1
-          }
-        },
-        {
-          "id": "b356f154-c160-4387-83f2-72550e2d960c",
-          "type": "slider",
-          "layout": {
-            "left": 31,
-            "top": 21,
-            "width": 14,
-            "height": 5
-          },
-          "constraints": {
-            "width": {
-              "min": 6
-            },
-            "height": {
-              "min": 4
-            }
-          },
-          "slot": "nt:/SmartDashboard/Speed% Shooting Motor",
-          "props": {
-            "interactive": false,
-            "vertical": false,
-            "valueFormat": {
-              "maximumFractionDigits": 2
-            },
-            "min": -1,
-            "max": 1,
-            "step": 0.1
-          }
-        },
-        {
           "id": "818b2192-60b2-4a8b-8fde-02e928a8aab3",
           "type": "camera",
           "layout": {
@@ -494,6 +348,164 @@
         }
       ]
     },
-    "custom": []
+    "custom": [
+      {
+        "id": "f70024d5-0305-429c-b090-2b2dfe8514fb",
+        "viewport": {
+          "x": -360,
+          "y": -312,
+          "scale": 0.5
+        },
+        "widgets": [
+          {
+            "id": "67ec9bca-4236-4d27-bfa6-106f6af719f2",
+            "type": "slider",
+            "layout": {
+              "left": 31,
+              "top": 27,
+              "width": 14,
+              "height": 5
+            },
+            "constraints": {
+              "width": {
+                "min": 6
+              },
+              "height": {
+                "min": 4
+              }
+            },
+            "slot": "nt:/SmartDashboard/Swerve Drive Train Speed Percentage 0-1",
+            "props": {
+              "title": "Swerve Drive Train Speed %",
+              "interactive": true,
+              "vertical": false,
+              "valueFormat": {
+                "maximumFractionDigits": 2
+              },
+              "min": 0,
+              "max": 1,
+              "step": 0.01
+            }
+          },
+          {
+            "id": "ffd42b36-edfe-4eec-b6c8-b182c15fe754",
+            "type": "slider",
+            "layout": {
+              "left": 31,
+              "top": 33,
+              "width": 14,
+              "height": 5
+            },
+            "constraints": {
+              "width": {
+                "min": 6
+              },
+              "height": {
+                "min": 4
+              }
+            },
+            "slot": "nt:/SmartDashboard/Swerve Drive Train Angular Rate 0-1",
+            "props": {
+              "title": "Swerve Angulare Rate",
+              "interactive": true,
+              "vertical": false,
+              "valueFormat": {
+                "maximumFractionDigits": 2
+              },
+              "min": 0,
+              "max": 1,
+              "step": 0.01
+            }
+          },
+          {
+            "id": "f0663432-a416-4c95-9a88-b209a01a03c8",
+            "type": "slider",
+            "layout": {
+              "left": 46,
+              "top": 33,
+              "width": 14,
+              "height": 5
+            },
+            "constraints": {
+              "width": {
+                "min": 6
+              },
+              "height": {
+                "min": 4
+              }
+            },
+            "slot": "nt:/SmartDashboard/Speed% Index Motor",
+            "props": {
+              "interactive": true,
+              "vertical": false,
+              "valueFormat": {
+                "maximumFractionDigits": 2
+              },
+              "min": 0,
+              "max": 1,
+              "step": 0.01
+            }
+          },
+          {
+            "id": "3ee2dfef-a2a2-4ee3-a7ec-9eea04b2e4f3",
+            "type": "slider",
+            "layout": {
+              "left": 46,
+              "top": 27,
+              "width": 14,
+              "height": 5
+            },
+            "constraints": {
+              "width": {
+                "min": 6
+              },
+              "height": {
+                "min": 4
+              }
+            },
+            "slot": "nt:/SmartDashboard/Speed% Intake Motor",
+            "props": {
+              "interactive": false,
+              "vertical": false,
+              "valueFormat": {
+                "maximumFractionDigits": 2
+              },
+              "min": -1,
+              "max": 1,
+              "step": 0.1
+            }
+          },
+          {
+            "id": "b356f154-c160-4387-83f2-72550e2d960c",
+            "type": "slider",
+            "layout": {
+              "left": 46,
+              "top": 39,
+              "width": 14,
+              "height": 5
+            },
+            "constraints": {
+              "width": {
+                "min": 6
+              },
+              "height": {
+                "min": 4
+              }
+            },
+            "slot": "nt:/SmartDashboard/Speed% Shooting Motor",
+            "props": {
+              "interactive": false,
+              "vertical": false,
+              "valueFormat": {
+                "maximumFractionDigits": 2
+              },
+              "min": -1,
+              "max": 1,
+              "step": 0.1
+            }
+          }
+        ]
+      }
+    ]
   }
 }
