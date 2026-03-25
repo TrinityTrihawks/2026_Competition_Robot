@@ -4,6 +4,9 @@ import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
@@ -15,7 +18,11 @@ import java.util.function.DoubleSupplier;
 
 public class NavUtil {
     private static Translation2d TargetHub = Constants.BLUE_HUB;
-    private static Double SHOOTING_X_MAX = 3.5; // Don't shoot past this line
+
+    private static final NetworkTable table = NetworkTableInstance.getDefault().getTable("Targeting");
+    private static final StructPublisher<Pose2d> targetPosePub =
+            table.getStructTopic("ShootingTargetPose", Pose2d.struct).publish();
+    private static Double SHOOTING_X_MAX = 3.25; // Don't shoot past this line
 
     // Calculates the terminal points of the shooting arc on the blue side. Flip for Red.
     public static List<Pose2d> findArcTerminalPoints(Double shootingDistance) {
@@ -30,20 +37,17 @@ public class NavUtil {
         return out;
     }
 
+    public static Boolean isBlue() {
+        return DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue;
+    }
     public static Pose2d FindShootTarget(Translation2d RobotXY, DoubleSupplier SHOOTING_DOUBLE_SUPPLIER) {
         double shootingDistance = SHOOTING_DOUBLE_SUPPLIER.getAsDouble();
         Collection<Pose2d> terminalPoints = findArcTerminalPoints(shootingDistance);
-        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+        if (isBlue()) {
             TargetHub = Constants.BLUE_HUB;
-            if (RobotXY.getX() > SHOOTING_X_MAX) {
-                return (new Pose2d(RobotXY, Rotation2d.kZero)).nearest(terminalPoints);
-            }
         } else {
             TargetHub = Constants.RED_HUB;
-            if (RobotXY.getX() < FlippingUtil.fieldSizeX - SHOOTING_X_MAX) {
-                terminalPoints = terminalPoints.stream().map(FlippingUtil::flipFieldPose).toList();
-                return (new Pose2d(RobotXY, Rotation2d.kZero)).nearest(terminalPoints);
-            }
+            terminalPoints = terminalPoints.stream().map(FlippingUtil::flipFieldPose).toList();
         }
         Translation2d OutputTranslation = TargetHub.minus(RobotXY);
         double X = OutputTranslation.getX();
@@ -58,6 +62,11 @@ public class NavUtil {
 
         Rotation2d TargHead = new Rotation2d(theta);
         Pose2d TargPose = new Pose2d(targX, targY, TargHead);
+        // Clip target pose to ends of the arc if it's out of bounds
+        if (isBlue() && targX > SHOOTING_X_MAX || !isBlue() && targX < FlippingUtil.fieldSizeX - SHOOTING_X_MAX) {
+            TargPose = TargPose.nearest(terminalPoints);
+        }
+        targetPosePub.set(TargPose);
         return TargPose;
     }
 
