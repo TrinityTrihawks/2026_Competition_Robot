@@ -20,7 +20,8 @@ public class AlignShooting extends SequentialCommandGroup {
                 Commands.defer(() ->
                                 AutoBuilder.pathfindToPose(NavUtil.FindShootTarget(drivetrain.getState().Pose.getTranslation(), () -> SmartDashboard.getNumber(Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST, Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST)), DynamicPathDemo.DEFAULT_CONSTRAINTS),
                         Set.of(drivetrain)),
-                new AlignToHub(drivetrain));
+                new AlignToHub(drivetrain),
+                new AlignDistance(drivetrain));
     }
 
 
