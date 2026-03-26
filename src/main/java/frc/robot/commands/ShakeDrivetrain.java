@@ -35,7 +35,7 @@ public class ShakeDrivetrain extends Command {
     @Override
     public void execute() {
         double period = SmartDashboard.getNumber("Shake Period Seconds", 0.1);
-        double speed = SmartDashboard.getNumber("Shake Speed m/s", 0.5);
+        double speed = SmartDashboard.getNumber("Shake Speed m/s", 0.3);
 
         if (m_timer.hasElapsed(period)) {
             m_goingRight = !m_goingRight;
