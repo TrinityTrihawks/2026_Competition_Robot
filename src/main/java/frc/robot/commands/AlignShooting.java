@@ -25,8 +25,8 @@ public class AlignShooting extends SequentialCommandGroup {
     private static final SendableChooser<AlignMode> alignModeChooser = new SendableChooser<>();
 
     static {
-        alignModeChooser.setDefaultOption("Robot-Centric", AlignMode.ROBOT_CENTRIC);
-        alignModeChooser.addOption("Field-Centric", AlignMode.FIELD_CENTRIC);
+        alignModeChooser.setDefaultOption("Field-Centric", AlignMode.FIELD_CENTRIC);
+        alignModeChooser.addOption("Robot-Centric", AlignMode.ROBOT_CENTRIC);
         SmartDashboard.putData(Constants.SmartDashboardConstants.KEY_ALIGN_MODE_CHOOSER, alignModeChooser);
     }
 
