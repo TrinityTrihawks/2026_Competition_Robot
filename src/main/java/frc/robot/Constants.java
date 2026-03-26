@@ -52,6 +52,8 @@ public class Constants {
         public static final String KEY_VISION_AVG_TAG_DIST = "Vision/AvgTagDist";
         public static final String KEY_ANGLE_ERROR_LIMELIGHT = "Angle Error for Limelight";
         public static final String KEY_TAGS = "tags";
+
+        public static final String KEY_ALIGN_MODE_CHOOSER = "Auto Aim Mode";
     }
 
     public static final class VisionConstants {
