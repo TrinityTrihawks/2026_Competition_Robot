@@ -1,7 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +27,10 @@ public class FieldCentricAlign extends Command {
     private final PIDController xController = new PIDController(3.0, 0.0, 0.0);
     private final PIDController yController = new PIDController(3.0, 0.0, 0.0);
 
+    private static final NetworkTable table = NetworkTableInstance.getDefault().getTable("Targeting");
+    private static final StructPublisher<Pose2d> targetPosePub =
+            table.getStructTopic("FieldCentricAlignGoal", Pose2d.struct).publish();
+
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric();
 
     public FieldCentricAlign(CommandSwerveDrivetrain drivetrain) {
@@ -35,8 +44,12 @@ public class FieldCentricAlign extends Command {
 
     @Override
     public void execute() {
-        Translation2d hub = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
-                ? Constants.BLUE_HUB : Constants.RED_HUB;
+        Translation2d hub = Constants.BLUE_HUB;
+        int invert = 1;
+        if (DriverStation.getAlliance().orElse(Alliance.Blue) != Alliance.Blue) {
+            hub = Constants.RED_HUB;
+            invert = -1;
+        }
 
         double targetDist = SmartDashboard.getNumber(
                 Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST,
@@ -54,11 +67,13 @@ public class FieldCentricAlign extends Command {
                 hub.getY() - robotPos.getY(),
                 hub.getX() - robotPos.getX());
 
+        targetPosePub.set(new Pose2d(targetPos, Rotation2d.fromRadians(targetAngle)));
         double currentAngle = drivetrain.getState().Pose.getRotation().getRadians();
 
         double rotOutput = rotController.calculate(currentAngle, targetAngle);
-        double xOutput = xController.calculate(robotPos.getX(), targetPos.getX());
-        double yOutput = yController.calculate(robotPos.getY(), targetPos.getY());
+        // invert set to 1 for blue, -1 for red to account for drive train flipping
+        double xOutput = invert * xController.calculate(robotPos.getX(), targetPos.getX());
+        double yOutput = invert * yController.calculate(robotPos.getY(), targetPos.getY());
 
         drivetrain.setControl(drive
                 .withVelocityX(xOutput)
