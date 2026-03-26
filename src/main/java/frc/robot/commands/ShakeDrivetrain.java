@@ -22,7 +22,7 @@ public class ShakeDrivetrain extends Command {
         m_drivetrain = drivetrain;
         addRequirements(drivetrain);
 
-        SmartDashboard.putNumber("Shake Speed m/s", 0.5);
+        SmartDashboard.putNumber("Shake Speed m/s", 0.3);
         SmartDashboard.putNumber("Shake Period Seconds", 0.1);
     }
 
