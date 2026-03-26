@@ -9,6 +9,10 @@ import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -28,6 +32,11 @@ public class Robot extends TimedRobot {
   @Logged(name = "MatchTime")
   private final MatchTime matchTime = new MatchTime(2026);
 
+  private static final NetworkTable alignTable = NetworkTableInstance.getDefault().getTable("Targeting");
+  private static final DoublePublisher distancePub = alignTable.getDoubleTopic("DistanceToTarget").publish();
+  private static final DoublePublisher distanceErrorPub = alignTable.getDoubleTopic("DistanceError").publish();
+  private static final DoublePublisher anglePub = alignTable.getDoubleTopic("AngleToTargetDegCW").publish();
+
   public Robot() {
     m_robotContainer = new RobotContainer();
     Epilogue.bind(this);
@@ -39,6 +48,25 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_BATTERY_VOLTAGE, RobotController.getBatteryVoltage());
     matchTime.update(MatchTime.kGameData2026.get());
+
+    Translation2d hub = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
+            ? Constants.BLUE_HUB : Constants.RED_HUB;
+    Pose2d robotPose = m_robotContainer.drivetrain.getState().Pose;
+    double distance = robotPose.getTranslation().getDistance(hub);
+    double targetDist = SmartDashboard.getNumber(
+            Constants.SmartDashboardConstants.KEY_TARGET_SHOOTING_DIST,
+            Constants.SmartDashboardConstants.DEFAULT_TARGET_SHOOTING_DIST);
+    distancePub.set(distance);
+    distanceErrorPub.set(distance - targetDist);
+    double targetAngleRad = Math.atan2(
+            hub.getY() - robotPose.getY(),
+            hub.getX() - robotPose.getX()
+    );
+    double currentAngleRad = robotPose.getRotation().getRadians();
+    double errorRad = targetAngleRad - currentAngleRad;
+    // Normalize to [-pi, pi]
+    errorRad = Math.atan2(Math.sin(errorRad), Math.cos(errorRad));
+    anglePub.set(Math.toDegrees(errorRad));
   }
 
   @Override
