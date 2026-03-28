@@ -41,7 +41,7 @@ public class Constants {
         public static final String KEY_LIMELIGHT_CHOOSER = "Limelight On/Off";
 
         public static final String KEY_TARGET_SHOOTING_DIST = "Target Shooting Dist";
-        public static final double DEFAULT_TARGET_SHOOTING_DIST = 2;
+        public static final double DEFAULT_TARGET_SHOOTING_DIST = 2.5;
 
         // Telemetry keys
         public static final String KEY_BATTERY_VOLTAGE = "Battery Voltage";
