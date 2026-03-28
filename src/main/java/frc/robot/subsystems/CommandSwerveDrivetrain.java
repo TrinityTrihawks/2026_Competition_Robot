@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
@@ -156,14 +157,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         configureCurrentLimits();
     }
     private void configureCurrentLimits() {
-    TalonFXConfiguration config = new TalonFXConfiguration();
+    var currentLimitConfigs = new CurrentLimitsConfigs();
+    currentLimitConfigs.SupplyCurrentLimit = 50;
+    currentLimitConfigs.SupplyCurrentLimitEnable = true;
 
-    config.CurrentLimits.SupplyCurrentLimit = 50;
-    config.CurrentLimits.SupplyCurrentLimitEnable = true;
-    
-    // Apply to all drive motors
     for (var module : getModules()) {
-        module.getDriveMotor().getConfigurator().apply(config);
+        module.getDriveMotor().getConfigurator().apply(currentLimitConfigs);
     }
 }
 
