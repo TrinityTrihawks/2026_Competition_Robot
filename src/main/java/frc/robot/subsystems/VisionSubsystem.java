@@ -1,18 +1,18 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotation;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
@@ -29,6 +29,9 @@ public class VisionSubsystem extends SubsystemBase {
     private final String m_limelightName;
     private VisionMeasurement m_latestMeasurement = null;
     private StructPublisher<Pose2d> llPosePub;
+    private double m_lastHeartbeat = 0;
+    private int m_heartbeatStaleCount = 0;
+    private final SendableChooser<Boolean> Limelight_On_Off = new SendableChooser<>();
 
     public VisionSubsystem(CommandSwerveDrivetrain drivetrain) {
         this(drivetrain, VisionConstants.LIMELIGHT_NAME);
@@ -39,20 +42,22 @@ public class VisionSubsystem extends SubsystemBase {
         .getStructTopic(limelightName + "-pose", Pose2d.struct).publish();
         m_drivetrain = drivetrain;
         m_limelightName = limelightName;
+
+        Limelight_On_Off.setDefaultOption("On", true);
+        Limelight_On_Off.addOption("Off", false);
+        SmartDashboard.putData(Constants.SmartDashboardConstants.KEY_LIMELIGHT_CHOOSER, Limelight_On_Off);
     }
 
     @Override
     public void periodic() { // for periodic methods if it returns it cuts the loop back to the start
         m_latestMeasurement = null;
 
-        Rotation3d rotation = m_drivetrain.getRotation3d();
+        Rotation2d rotation = m_drivetrain.getState().Pose.getRotation();
 
-        double yaw = rotation.getZ();
-        double pitch = rotation.getY();
-        double roll = rotation.getX();
-
+        double yaw = rotation.getDegrees();
+        
         double YawRate = m_drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
-        LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, pitch, 0, roll, 0);
+        LimelightHelpers.SetRobotOrientation(m_limelightName, yaw , YawRate, 0, 0, 0, 0);
 
 
         PoseEstimate estimate =
@@ -60,10 +65,21 @@ public class VisionSubsystem extends SubsystemBase {
 
             llPosePub.set(estimate.pose); // publish the pose to network tables
 
-        SmartDashboard.putNumber("Vision/TagCount", estimate.tagCount);
-        SmartDashboard.putNumber("Vision/AvgTagDist", estimate.avgTagDist);
-        SmartDashboard.putNumber("Angle Error for Limelight", getTagTx());
-        SmartDashboard.putNumber("tags", getTagCount());
+        // Limelight connection status via heartbeat
+        double heartbeat = LimelightHelpers.getHeartbeat(m_limelightName);
+        if (heartbeat != m_lastHeartbeat) {
+            m_lastHeartbeat = heartbeat;
+            m_heartbeatStaleCount = 0;
+        } else {
+            m_heartbeatStaleCount++;
+        }
+        // If heartbeat hasn't changed in ~500ms (25 cycles at 50Hz), consider disconnected
+        SmartDashboard.putBoolean(Constants.SmartDashboardConstants.KEY_VISION_LIMELIGHT_CONNECTED, m_heartbeatStaleCount < 25);
+
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_VISION_TAG_COUNT, estimate.tagCount);
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_VISION_AVG_TAG_DIST, estimate.avgTagDist);
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_ANGLE_ERROR_LIMELIGHT, getTagTx());
+        SmartDashboard.putNumber(Constants.SmartDashboardConstants.KEY_TAGS, getTagCount());
 
         if (estimate == null || estimate.tagCount == 0) {
             return;
@@ -82,7 +98,9 @@ public class VisionSubsystem extends SubsystemBase {
 
         Matrix<N3, N1> stdDevs = calculateStdDevs(estimate);
 
+        if (Limelight_On_Off.getSelected() == true) {
         m_drivetrain.addVisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
+        }
 
         m_latestMeasurement = new VisionMeasurement(pose, estimate.timestampSeconds, stdDevs);
     }

@@ -5,14 +5,10 @@ import com.revrobotics.spark.SparkMax;
 
 import java.util.function.DoubleSupplier;
 
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 
 public class KitbotSubsystem extends SubsystemBase {
 
@@ -21,11 +17,11 @@ public class KitbotSubsystem extends SubsystemBase {
   private DoubleSupplier getIndexspeed;
   private DoubleSupplier getShootingspeed;
 
-   private final SparkMax IntakeMotor = new SparkMax(22, MotorType.kBrushless);
+   private final SparkMax IntakeMotor = new SparkMax(21, MotorType.kBrushless);
 
    private final SparkMax IndexMotor = new SparkMax(23, MotorType.kBrushless);
 
-   private final SparkMax ShootingMotor = new SparkMax(21,MotorType.kBrushless);
+   private final SparkMax ShootingMotor = new SparkMax(22,MotorType.kBrushless);
 
    //Creates a new ExampleSubsystem. 
 
@@ -63,24 +59,26 @@ public class KitbotSubsystem extends SubsystemBase {
   }
 
    public void intakeToShoot() {
-    IntakeMotor.set(getIntakespeed.getAsDouble());
-    ShootingMotor.set(getShootingspeed.getAsDouble());
+    IntakeMotor.set(getShootingspeed.getAsDouble()); // set as shooting speed so both dont fight
+    ShootingMotor.set(-getShootingspeed.getAsDouble());
    }
 
    public void intakeToHopper(){
+   ShootingMotor.set(-getIntakespeed.getAsDouble()); // runs to not drag intake motor
    IntakeMotor.set(getIntakespeed.getAsDouble());
-   IndexMotor.set(getIndexspeed.getAsDouble());
+   IndexMotor.set(-getIndexspeed.getAsDouble());
    }
    public void inverseEverything(){
-   ShootingMotor.set(-getShootingspeed.getAsDouble());
-   IndexMotor.set(-getIndexspeed.getAsDouble());
+   ShootingMotor.set(getShootingspeed.getAsDouble());
+   IndexMotor.set(getIndexspeed.getAsDouble());
    IntakeMotor.set(-getIntakespeed.getAsDouble());
-
    }
-   public void hopperToShoot() {
-     ShootingMotor.set(getShootingspeed.getAsDouble());
-     IndexMotor.set(-getIndexspeed.getAsDouble());
-     IntakeMotor.set(getIntakespeed.getAsDouble());
+   public void revUpShooter() {
+    ShootingMotor.set(-getShootingspeed.getAsDouble());
+    IntakeMotor.set(getShootingspeed.getAsDouble());
+   }
+   public void engageIndexer() {
+     IndexMotor.set(getIndexspeed.getAsDouble());
    }
    public void stopMotors() {
     ShootingMotor.set(0);

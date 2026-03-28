@@ -1,0 +1,131 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.4675769230769244,
+        "y": 0.6086866059817952
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.021459792855437,
+        "y": 0.6086866059817952
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.64488946684005,
+        "y": 0.7856046814044213
+      },
+      "prevControl": {
+        "x": 7.1966970091027305,
+        "y": 0.5733029908972697
+      },
+      "nextControl": {
+        "x": 7.979594213192541,
+        "y": 0.9441490349398118
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.916163849154744,
+        "y": 3.6634720416124846
+      },
+      "prevControl": {
+        "x": 7.892574772431727,
+        "y": 2.24812743823147
+      },
+      "nextControl": {
+        "x": 7.931655050907575,
+        "y": 4.5929441467823855
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.735051282051284,
+        "y": 0.6086866059817952
+      },
+      "prevControl": {
+        "x": 6.794002915255033,
+        "y": 0.5547348383276953
+      },
+      "nextControl": {
+        "x": 4.676099648847535,
+        "y": 0.6626383736358952
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.0517912218268095,
+        "y": 0.7856046814044213
+      },
+      "prevControl": {
+        "x": 3.2919265179386947,
+        "y": 0.35509850271465565
+      },
+      "nextControl": {
+        "x": 2.795970709006296,
+        "y": 1.244230769230769
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.6070641025641033,
+        "y": 2.5117051282051284
+      },
+      "prevControl": {
+        "x": 2.4006117346473212,
+        "y": 2.0688401770234495
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ShootingDepot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.0676328502415475,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 3.371010638297887,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 41.63353933657014
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
